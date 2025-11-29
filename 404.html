@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>404 | MicroX</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Mobile Scaling -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Ads -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5001793692873300" crossorigin="anonymous"></script>
+
+    <!-- Schema for Logo -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "https://microxlearn.online/",
+      "logo": "https://microxlearn.online/favicon.ico"
+    }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: #0a0016;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* BACKGROUND CANVAS */
+        #space {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+
+        /* HEADER */
+        header {
+            width: 100%;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header img {
+            height: 40px;
+            width: auto;
+            max-width: 100%;
+        }
+
+        header nav a {
+            color: #c084fc;
+            text-decoration: none;
+            margin-left: 16px;
+            font-size: 14px;
+        }
+
+        /* MAIN CARD */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            min-height: calc(100vh - 150px);
+            text-align: center;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 500px;
+            padding: 40px 25px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+        }
+
+        .code {
+            font-size: clamp(40px, 10vw, 90px);
+            font-weight: 700;
+            color: #c084fc;
+            margin-bottom: 5px;
+        }
+
+        .title {
+            font-size: clamp(18px, 4vw, 28px);
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #e2d9ff;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            padding: 12px 22px;
+            border-radius: 50px;
+            margin: 6px;
+            display: inline-block;
+            text-decoration: none;
+            border: 1px solid #a855f7;
+            color: #fff;
+            background: rgba(168, 85, 247, 0.2);
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            background: #a855f7;
+            box-shadow: 0 0 20px #a855f7;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 22px 10px;
+            color: #a78bfa;
+            font-size: 12px;
+        }
+
+        /* MOBILE OPTIMIZATION */
+        @media (max-width: 480px) {
+            header {
+                padding: 12px 15px;
+            }
+
+            header img {
+                height: 34px;
+            }
+
+            .card {
+                padding: 30px 20px;
+            }
+
+            .btn {
+                width: 100%;
+                margin-top: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BACKGROUND -->
+    <canvas id="space"></canvas>
+
+    <!-- HEADER -->
+    <header>
+        <img src="/assets/logo.png" alt="MicroX Logo">
+        <nav>
+            <a href="/contact-us.html">Contact</a>
+        </nav>
+    </header>
+
+    <!-- MAIN -->
+    <div class="container">
+        <div class="card">
+            <div class="code">MicroX</div>
+            <div class="title">Your complete learning hub</div>
+            <p class="subtitle">404</p>
+
+            <a href="/" class="btn">Go Home</a><br>
+            <a href="/higher-secondary.html" class="btn">HSE</a>
+            <a href="/ug/ug.html" class="btn">FYUGP</a>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        © <span id="year"></span> MicroX. All rights reserved.
+    </footer>
+
+    <!-- SPACE ANIMATION -->
+    <script>
+        const canvas = document.getElementById("space");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedY = Math.random() * 0.6 + 0.1;
+                this.alpha = Math.random() * 0.8 + 0.2;
+            }
+            update() {
+                this.y += this.speedY;
+                if (this.y > canvas.height) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = `rgba(216, 180, 254, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 150; i++) particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        initParticles();
+        animate();
+
+        window.addEventListener("resize", () => {
+            canvas.width = innerWidth;
+            canvas.height = innerHeight;
+            initParticles();
+        });
+
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+
+</body>
+</html>
