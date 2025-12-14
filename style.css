@@ -330,3 +330,54 @@ button {
 
     box-shadow: 0 8px 20px rgba(0,0,0,0.10) !important;
 }
+/* NAVBAR */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 18px;
+}
+
+.nav-left img{
+    height:40px;
+}
+
+/* HAMBURGER */
+.hamburger{
+    width:30px;
+    cursor:pointer;
+}
+
+.hamburger span{
+    display:block;
+    height:3px;
+    background:#000;
+    margin:6px 0;
+    transition:0.3s;
+}
+
+/* MENU PANEL */
+#menu-panel{
+    position:absolute;
+    top:70px;
+    right:18px;
+    background:#fff;
+    border-radius:8px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+    display:none;
+    flex-direction:column;
+    min-width:160px;
+    z-index:999;
+}
+
+#menu-panel a{
+    padding:12px 16px;
+    text-decoration:none;
+    color:#000;
+    font-weight:500;
+}
+
+#menu-panel a:hover{
+    background:#f2f2f2;
+}
+
