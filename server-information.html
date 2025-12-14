@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Server Information | MicroX</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,system-ui,sans-serif}
+body{background:#0b0f1a;color:#e6e8ef}
+
+/* ===== NAV ===== */
+.icon-nav{
+ position:fixed;
+ top:14px;left:14px;right:14px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ z-index:9999;
+ transition:transform .35s ease, opacity .35s ease;
+}
+.icon-nav.hide{
+ transform:translateY(-120%);
+ opacity:0;
+}
+.icon-group{
+ display:flex;
+ flex-direction:row;
+ gap:12px;
+}
+.icon-btn{
+ width:44px;height:44px;border-radius:50%;
+ display:flex;align-items:center;justify-content:center;
+ color:#e6e8ef;text-decoration:none;
+ background:rgba(255,255,255,.12);
+ backdrop-filter:blur(14px);
+ border:1px solid rgba(255,255,255,.25);
+ transition:.25s;
+}
+.icon-btn:hover{
+ background:rgba(0,55,255,.25);
+}
+
+/* ===== LAYOUT ===== */
+.container{max-width:1200px;margin:80px auto;padding:20px}
+.header{font-size:24px;font-weight:600;margin-bottom:20px}
+.panel{
+ background:#11162a;border:1px solid #1d2450;
+ border-radius:14px;padding:20px;margin-bottom:20px
+}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:16px
+}
+.card{
+ background:#0e1330;border:1px solid #1f2a66;
+ border-radius:12px;padding:16px
+}
+.label{font-size:12px;color:#8a92c9}
+.value{font-size:20px;font-weight:600;margin-top:6px}
+
+.bar{
+ height:6px;background:#1a2252;
+ border-radius:10px;margin-top:10px;overflow:hidden
+}
+.bar span{
+ height:100%;display:block;
+ background:linear-gradient(90deg,#3b7cff,#6fd1ff);
+ width:0%;transition:width 1s ease
+}
+
+/* ===== STORAGE LIST ===== */
+.storage-list{
+ display:grid;grid-template-columns:1fr 1fr;
+ gap:12px;margin-top:10px
+}
+.storage-item{
+ background:#0b1028;border:1px solid #1c245c;
+ border-radius:8px;padding:10px;
+ display:flex;justify-content:space-between;
+ font-size:13px
+}
+
+.footer{text-align:center;font-size:11px;color:#6f77b7;margin-top:30px}
+</style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+<div class="icon-nav" id="iconNav">
+ <div class="icon-group">
+  <a href="index.html" class="icon-btn">🏠</a>
+ </div>
+ <div class="icon-group">
+  <a href="privacy-policy.html" class="icon-btn">🔒</a>
+  <a href="about-us.html" class="icon-btn">ℹ️</a>
+  <a href="contact-us.html" class="icon-btn">📞</a>
+ </div>
+</div>
+
+<div class="container">
+<div class="header">MicroX Server Information</div>
+
+<!-- PERFORMANCE -->
+<div class="panel">
+<div class="header" style="font-size:18px;margin-bottom:12px">Performance</div>
+
+<div class="grid">
+
+<div class="card">
+ <div class="label">SERVER STATUS</div>
+ <div class="value">ONLINE</div>
+</div>
+
+<div class="card">
+ <div class="label">UPTIME</div>
+ <div class="value">183 days</div>
+</div>
+
+<div class="card">
+ <div class="label">CPU CORES (ACTIVE)</div>
+ <div class="value"><span id="coresVal"></span> / 16</div>
+ <div class="bar"><span id="coresBar"></span></div>
+</div>
+
+<div class="card">
+ <div class="label">CPU SPEED</div>
+ <div class="value"><span id="ghzVal"></span> GHz</div>
+ <div class="bar"><span id="ghzBar"></span></div>
+</div>
+
+<div class="card">
+ <div class="label">MEMORY USAGE</div>
+ <div class="value"><span id="ramVal"></span> / 64 GB</div>
+ <div class="bar"><span id="ramBar"></span></div>
+</div>
+
+<div class="card">
+ <div class="label">SERVER LOAD</div>
+ <div class="value"><span id="loadVal"></span>%</div>
+ <div class="bar"><span id="loadBar"></span></div>
+</div>
+
+<div class="card">
+ <div class="label">NETWORK TRAFFIC</div>
+ <div class="value"><span id="netVal"></span> Mbps</div>
+ <div class="bar"><span id="netBar"></span></div>
+</div>
+
+<div class="card">
+ <div class="label">STORAGE USED</div>
+ <div class="value"><span id="storageVal"></span> / 2048 GB</div>
+ <div class="bar"><span id="storageBar"></span></div>
+</div>
+
+</div>
+</div>
+
+<div class="panel">
+<div class="label">FILE STORAGE</div>
+<div class="storage-list">
+ <div class="storage-item">/ug_assets <span>22 GB</span></div>
+ <div class="storage-item">/hse_assets <span>18 GB</span></div>
+ <div class="storage-item">/pdf_store <span>87 GB</span></div>
+ <div class="storage-item">/microcopy <span>48 GB</span></div>
+ <div class="storage-item">/backup <span>324 GB</span></div>
+ <div class="storage-item">/temp <span id="tempVal"></span></div>
+ <div class="storage-item">/logs <span>32 GB</span></div>
+ <div class="storage-item">/cache <span id="cacheVal"></span></div>
+</div>
+</div>
+
+<div class="footer">MicroX</div>
+</div>
+
+<script>
+const clamp=(v,min,max)=>Math.min(Math.max(v,min),max)
+
+/* STATE */
+let cores=10, ghz=4.05, ram=32, load=50, net=260, storage=827
+let temp=45, cache=116
+
+function approach(current,target,rate){
+ return current + (target-current)*rate
+}
+
+function tick(){
+ /* targets */
+ const tCores = Math.floor(Math.random()*11)+6
+ const tRam   = Math.random()*12+26
+ const tLoad  = Math.random()*20+40
+ const tNet   = Math.random()*60+240
+ const tGHz   = Math.random()*0.3+3.9
+
+ cores = approach(cores,tCores,0.25)
+ ram   = approach(ram,tRam,0.25)
+ load  = approach(load,tLoad,0.25)
+ net   = approach(net,tNet,0.25)
+ ghz   = approach(ghz,tGHz,0.15)
+
+ const delta = Math.random()>0.8?1:-1
+ storage = clamp(storage+delta,780,900)
+ temp = clamp(temp+delta,30,80)
+ cache = clamp(cache+delta,90,160)
+
+ coresVal.textContent=Math.round(cores)
+ ramVal.textContent=Math.round(ram)
+ loadVal.textContent=Math.round(load)
+ netVal.textContent=Math.round(net)
+ ghzVal.textContent=ghz.toFixed(2)
+ storageVal.textContent=storage
+
+ coresBar.style.width=(cores/16*100)+"%"
+ ramBar.style.width=(ram/64*100)+"%"
+ loadBar.style.width=load+"%"
+ netBar.style.width=(net/300*100)+"%"
+ ghzBar.style.width=(ghz/4.2*100)+"%"
+ storageBar.style.width=(storage/2048*100)+"%"
+
+ tempVal.textContent=temp+" GB"
+ cacheVal.textContent=cache+" GB"
+}
+
+setInterval(tick,1200)
+tick()
+
+/* NAV AUTO HIDE */
+let last=0
+window.addEventListener("scroll",()=>{
+ const y=window.pageYOffset
+ y>last&&y>80?iconNav.classList.add("hide"):iconNav.classList.remove("hide")
+ last=y
+})
+</script>
+
+</body>
+</html>

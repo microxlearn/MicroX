@@ -17,7 +17,9 @@ body.loaded {
     opacity: 1;
 }
 
-/* NAVBAR */
+/* =========================================
+   BASE NAV (OLD NAV SUPPORT)
+========================================= */
 nav {
     width: 100%;
     padding: 15px 60px;
@@ -37,24 +39,23 @@ nav {
     display: flex;
     align-items: center;
     gap: 30px;
+
+    /* ✅ FIX 1: allow wrapping */
+    flex-wrap: wrap;
 }
 
 .nav-right a {
     text-decoration: none;
     color: inherit;
     font-size: 16px;
+
+    /* ✅ FIX 2: force visible box */
+    display: inline-block;
 }
 
-.nav-right a.active {
-    border-bottom: 3px solid #0037ff;
-    padding-bottom: 4px;
-}
-
-.nav-right img {
-    height: 22px;
-}
-
-/* HERO */
+/* =========================================
+   HERO
+========================================= */
 .hero {
     text-align: center;
     padding: 60px 20px;
@@ -76,58 +77,36 @@ nav {
     line-height: 1.6;
 }
 
-/* ============================================
-   FIXED BUTTONS — ROUNDED RECTANGLE (HOME PAGE)
-============================================ */
-
+/* =========================================
+   GLASS BUTTON STYLE (UNCHANGED)
+========================================= */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
-    padding: 14px 28px;
+    padding: 10px 28px;
     border-radius: 40px;
-
     font-size: 18px;
     font-weight: 600;
     color: #000;
-
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(14px) saturate(180%);
     -webkit-backdrop-filter: blur(14px) saturate(180%);
-
     border: 2px solid rgba(0, 98, 255, 0.25);
     text-decoration: none;
-
     transition: 0.25s ease;
     position: relative;
     overflow: hidden;
-
-    width: auto !important;
-    height: auto !important;
-    white-space: nowrap;
-    max-width: 100%;
-    text-overflow: ellipsis;
-
     box-shadow:
         0 8px 24px rgba(0, 0, 0, 0.12),
         inset 0 2px 8px rgba(255, 255, 255, 0.3);
 }
 
-/* Hover Glow */
 .btn:hover {
-    transform: scale(1.07);
+    transform: scale(1.05);
     border-color: rgba(0, 120, 255, 0.55);
-    box-shadow:
-        0 10px 36px rgba(0, 120, 255, 0.20),
-        inset 0 3px 10px rgba(255, 255, 255, 0.35);
 }
 
-.btn:active {
-    transform: scale(0.95);
-}
-
-/* Shine effect */
 .btn::after {
     content: "";
     position: absolute;
@@ -147,35 +126,38 @@ nav {
     top: 0%;
 }
 
-/* BUTTON GROUP */
-.hero-buttons {
-    margin-top: 40px;
-    display: flex;
-    justify-content: center;
-    gap: 70px;
+/* =========================================
+   GLOBAL VERTICAL FULL-WIDTH BUTTONS
+========================================= */
+.hero-buttons,
+.buttons,
+.button-group,
+.actions,
+div:has(> .btn),
+section:has(> .btn) {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 22px !important;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    nav { padding: 15px 20px; }
-    .hero h1 { font-size: 34px; }
+.btn {
+    width: 100% !important;
+    max-width: 520px !important;
+    justify-content: center !important;
+}
 
-    .hero-buttons {
-        flex-direction: column;
-        gap: 20px;
-    }
-
+@media (max-width: 600px) {
     .btn {
-        padding: 12px 24px;
+        max-width: 100% !important;
         font-size: 16px;
+        padding: 8px 22px;
     }
 }
 
-/* Floating equations */
-canvas {
-    pointer-events: none !important;
-}
-
+/* =========================================
+   FLOATING EQUATIONS (VISUAL ONLY)
+========================================= */
 .floating-equation {
     position: fixed;
     color: #0037ff;
@@ -187,15 +169,12 @@ canvas {
     font-size: 22px;
 }
 
-/* ============================================
-   MICROX ROTATING LOADER
-============================================ */
+/* =========================================
+   LOADER (CLICK SAFE)
+========================================= */
 #loader {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    inset: 0;
     background: #ffffff;
     display: flex;
     justify-content: center;
@@ -208,125 +187,106 @@ canvas {
 
 #loader.show {
     opacity: 1;
-    pointer-events: all;
+    pointer-events: none;
 }
 
 .loader-logo {
     width: 70px;
     height: 70px;
-    animation: rotateLogo 1.1s linear infinite;
 }
 
-@keyframes .loader-logo {
-    width: 70px;
-    height: 70px;
-    animation: none;   /* stops rotation */
+/* =========================================
+   MICROX NEW NAV (HAMBURGER)
+========================================= */
+
+.mx-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+    position: relative;
+    z-index: 2000;
+}
+
+.mx-nav-left img {
+    height: 40px;
+}
+
+/* Hamburger */
+.mx-hamburger {
+    width: 34px;
+    height: 26px;
+    cursor: pointer;
+    position: relative;
+}
+
+.mx-hamburger span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #000;
+    transition: 0.3s ease;
+}
+
+.mx-hamburger span:nth-child(1) { top: 0; }
+.mx-hamburger span:nth-child(2) { top: 11px; }
+.mx-hamburger span:nth-child(3) { bottom: 0; }
+
+.mx-hamburger.active span:nth-child(1) {
+    transform: rotate(45deg);
+    top: 11px;
+}
+.mx-hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+.mx-hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg);
+    bottom: 11px;
+}
+
+/* Side Nav */
+.mx-side-nav {
+    position: fixed;
+    top: 0;
+    right: -260px;
+    width: 260px;
+    height: 100%;
+    background: #fff;
+    padding: 80px 30px;
+    transition: right .35s ease;
+    z-index: 1990;
+}
+
+.mx-side-nav.active {
+    right: 0;
+}
+
+.mx-side-nav a {
+    display: block;
+    text-decoration: none;
+    color: #000;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* Overlay */
+.mx-overlay {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    display: none;
+    z-index: 1980;
+}
+
+.mx-overlay.active {
+    display: block;
 }
 
 
-/* ============================================
-   GLOBAL UNIFORM BUTTON SIZE (ALL BUTTONS SAME)
-============================================ */
 
-/* Apply same size to ALL buttons except navbar + footer links */
-a:not(nav a):not(footer a),
-button,
-input[type="button"],
-input[type="submit"],
-input[type="reset"] {
-    display: block !important;
-    width: 100% !important;          /* all same width */
-    max-width: 650px !important;     /* desktop uniform width */
-
-    padding: 18px 0 !important;      /* all same height */
-
-    margin: 20px auto !important;    /* spacing equal */
-    
-    background: rgba(255,255,255,0.95) !important;
-    border: 2px solid #a5c8ff !important;
-    border-radius: 50px !important;  /* uniform pill shape */
-
-    text-align: center !important;
-    font-size: 20px !important;      /* same text size */
-    font-weight: 600 !important;
-    color: #000 !important;
-    text-decoration: none !important;
-
-    box-shadow: 0 6px 18px rgba(0,0,0,0.10) !important;
-    cursor: pointer !important;
-}
-
-/* Hover effect uniform */
-a:hover,
-button:hover {
-    background: #ffffff !important;
-    border-color: #4d94ff !important;
-}
-
-/* Protect navbar/footer */
-nav a,
-footer a {
-    all: unset !important;
-    display: inline !important;
-    cursor: pointer !important;
-}
-
-/* Mobile uniform */
-@media (max-width: 600px) {
-    a:not(nav a):not(footer a),
-    button {
-        width: 100% !important;
-        padding: 16px 0 !important;
-        font-size: 18px !important;
-    }
-}
-/* ============================================
-   FORCE ALL BUTTON CONTAINERS INTO SINGLE COLUMN
-============================================ */
-
-/* Any div that contains buttons becomes vertical stack */
-div a:not(nav a):not(footer a),
-div button {
-    display: block !important;
-}
-
-/* Force parent containers to stop using row layout */
-div,
-section,
-main {
-    display: block !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    flex-wrap: nowrap !important;
-}
-
-/* Remove any grid layout that breaks stacking */
-div, section {
-    grid-template-columns: 1fr !important;
-}
-/* ============================================
-   UNIFORM FULL-WIDTH BUTTON STYLE
-============================================ */
-
-a:not(nav a):not(footer a),
-button {
-    display: block !important;
-    width: 100% !important;
-    max-width: 600px !important;
-
-    margin: 18px auto !important;
-    padding: 8px 0 !important;
-
-    background: rgba(255,255,255,0.95) !important;
-    border: 2px solid #a5c8ff !important;
-    border-radius: 50px !important;
-
-    font-size: 18px !important;
-    font-weight: 600 !important;
-    text-align: center !important;
-
-    color: #000 !important;
-    text-decoration: none !important;
-
-    box-shadow: 0 8px 20px rgba(0,0,0,0.10) !important;
+.nav-left a {
+    cursor: pointer;
 }

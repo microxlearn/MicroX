@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Privacy Policy | MicroX</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+    --primary:#0a58ff;
+    --text:#1c1c1c;
+    --muted:#666;
+    --bg:#ffffff;
+    --card:#f8f9fb;
+    --border:#e6e6e6;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:var(--bg);
+    font-family:"Inter","Poppins",Arial,sans-serif;
+    color:var(--text);
+    font-size:13.5px;
+    line-height:1.8;
+    opacity:0;
+    transition:opacity .8s ease;
+}
+
+body.loaded{
+    opacity:1;
+}
+
+.container{
+    max-width:900px;
+    margin:40px auto;
+    padding:35px 30px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,.04);
+}
+
+h2{
+    font-size:26px;
+    margin-bottom:25px;
+    letter-spacing:.5px;
+}
+
+h4{
+    font-size:16px;
+    margin-top:30px;
+    margin-bottom:10px;
+    font-weight:600;
+}
+
+h4 span{
+    color:var(--primary);
+}
+
+p{
+    margin-bottom:14px;
+    color:var(--text);
+}
+
+p.small{
+    font-size:12px;
+    color:var(--muted);
+}
+
+.glow-line{
+    width:100%;
+    height:1px;
+    background:linear-gradient(90deg,transparent,var(--primary),transparent);
+    margin:25px 0;
+    opacity:.4;
+}
+
+footer{
+    text-align:center;
+    margin-top:40px;
+    font-size:12px;
+    color:var(--muted);
+}
+
+@media(max-width:600px){
+    .container{
+        margin:20px;
+        padding:25px 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+     <nav style="padding:15px 30px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+        <div class="nav-left">
+            <a href="index.html" style="font-size:20px; font-weight:700; color:var(--primary); text-decoration:none;">MicroX</a>
+        </div>
+
+        <div class="nav-right">
+            <a href="index.html" style="margin-right:1px; color:var(--text); text-decoration:none;">Goto Home</a>
+        </div>
+    </nav>
+
+<div class="container">
+
+<h2><b>Privacy Policy</b></h2>
+
+<p>
+<b>MicroX</b> operates the website <b>https://www.microxlearn.online</b> as an educational platform that provides study materials, academic resources, and learning support content. This Privacy Policy explains how information is collected, used, and protected when users access this website. By continuing to use MicroX, you agree to the practices described below.
+</p>
+
+<div class="glow-line"></div>
+
+<h4><b>Information We Collect<span>.</span></b></h4>
+
+<p>
+MicroX does not require users to register or submit personal information to access learning resources. However, certain non-personal technical data may be collected automatically, including browser type, device details, approximate location, IP address, visit duration, and page interaction data. This information is collected solely to understand usage patterns and improve educational content delivery.
+</p>
+
+<h4><b>How Information Is Used<span>.</span></b></h4>
+
+<p>
+Collected information is used strictly for website optimization, performance monitoring, academic content improvement, and user experience enhancement. MicroX does not sell, rent, or trade collected data. All insights derived from analytics are used internally to maintain platform quality and reliability.
+</p>
+
+<h4><b>Cookies and Tracking Technologies<span>.</span></b></h4>
+
+<p>
+MicroX may use cookies and similar technologies to store user preferences, analyze traffic flow, and measure content engagement. Cookies do not contain personal identification data. Users may disable cookies through browser settings, though certain features of the website may function less efficiently as a result.
+</p>
+
+<h4><b>Advertising and Google AdSense<span>.</span></b></h4>
+
+<p>
+MicroX displays advertisements through third-party providers, including Google AdSense. These services may use cookies, such as the DoubleClick cookie, to show relevant ads based on visits to this and other websites. Users may manage or disable personalized advertising through Google Ad Settings. MicroX does not directly access or control advertiser data collection.
+</p>
+
+<h4><b>Third-Party Privacy Policies<span>.</span></b></h4>
+
+<p>
+This Privacy Policy applies only to MicroX. External websites, links, or advertisers accessed through MicroX operate under their own privacy policies. Users are advised to review third-party policies independently, as MicroX holds no responsibility for external data practices.
+</p>
+
+<h4><b>Children’s Privacy<span>.</span></b></h4>
+
+<p>
+MicroX is committed to protecting children’s privacy. We do not knowingly collect personal information from children under the age of 13. If any such data is unintentionally collected, it will be promptly removed upon verification.
+</p>
+
+<h4><b>Data Security Measures<span>.</span></b></h4>
+
+<p>
+Reasonable administrative and technical safeguards are implemented to protect collected data from unauthorized access, misuse, or disclosure. While security practices follow industry standards, no online system can guarantee absolute protection.
+</p>
+
+<h4><b>User Consent<span>.</span></b></h4>
+
+<p>
+By using MicroX, users consent to this Privacy Policy and its terms. Continued usage following policy updates constitutes acceptance of revised terms.
+</p>
+
+<h4><b>Policy Updates<span>.</span></b></h4>
+
+<p>
+MicroX reserves the right to update this Privacy Policy at any time. Changes will be published on this page with updated revision information to ensure transparency.
+</p>
+
+<h4><b>Contact and Support<span>.</span></b></h4>
+
+<p>
+Questions, concerns, or clarification requests regarding this Privacy Policy may be addressed through the official contact methods available on the MicroX website.
+</p>
+
+<footer>
+© <span id="year"></span> MicroX. All rights reserved.
+</footer>
+
+</div>
+
+<script>
+window.addEventListener("load",()=>{
+    document.body.classList.add("loaded");
+    document.getElementById("year").textContent=new Date().getFullYear();
+});
+</script>
+
+</body>
+</html>
