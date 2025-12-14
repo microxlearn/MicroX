@@ -34,7 +34,7 @@
 
 
 
-    <style>
+  <style>
 *{
     margin:0;
     padding:0;
@@ -48,19 +48,20 @@ nav{
     justify-content:space-between;
     align-items:center;
     padding:14px 18px;
+    background:#fff;
     position:relative;
     z-index:1001;
-    background:#fff;
 }
 
 .nav-left img{
     height:40px;
 }
 
-/* ===== HAMBURGER BUTTON ===== */
+/* ===== HAMBURGER ===== */
 .hamburger{
     width:32px;
     cursor:pointer;
+    position:relative;
 }
 
 .hamburger span{
@@ -68,6 +69,20 @@ nav{
     height:3px;
     background:#000;
     margin:6px 0;
+    transition:0.3s ease;
+}
+
+/* ===== HAMBURGER → X ===== */
+.hamburger.active span:nth-child(1){
+    transform:rotate(45deg) translate(6px,6px);
+}
+
+.hamburger.active span:nth-child(2){
+    opacity:0;
+}
+
+.hamburger.active span:nth-child(3){
+    transform:rotate(-45deg) translate(6px,-6px);
 }
 
 /* ===== RIGHT SLIDE NAV ===== */
@@ -87,7 +102,7 @@ nav{
     right:0;
 }
 
-/* ===== TEXT LINKS (NO BORDER) ===== */
+/* ===== TEXT LINKS ONLY ===== */
 #sideNav a{
     display:block;
     text-decoration:none;
@@ -96,7 +111,7 @@ nav{
     margin-bottom:20px;
 }
 
-/* ===== TRANSPARENT OVERLAY (NO DIM) ===== */
+/* ===== TRANSPARENT OVERLAY ===== */
 #overlay{
     position:fixed;
     inset:0;
@@ -128,43 +143,41 @@ nav{
     </div>
 </nav>
 
-<!-- SLIDE NAVIGATION -->
+<!-- SIDE NAV -->
 <div id="sideNav">
     <a href="about-us.html">About Us</a>
     <a href="contact-us.html">Contact Us</a>
 </div>
 
-<!-- CLICK AREA -->
 <div id="overlay"></div>
 
 
 
-<!-- SCRIPT -->
 <script>
 const hamburger = document.getElementById("hamburger");
-const sideNav = document.getElementById("sideNav");
-const overlay = document.getElementById("overlay");
+const sideNav   = document.getElementById("sideNav");
+const overlay   = document.getElementById("overlay");
 
-hamburger.addEventListener("click", function(e){
-    e.stopPropagation();
-    sideNav.classList.add("active");
-    overlay.classList.add("active");
+hamburger.addEventListener("click", () => {
+    const isOpen = sideNav.classList.contains("active");
+
+    sideNav.classList.toggle("active", !isOpen);
+    overlay.classList.toggle("active", !isOpen);
+    hamburger.classList.toggle("active", !isOpen);
 });
 
-overlay.addEventListener("click", function(){
-    sideNav.classList.remove("active");
-    overlay.classList.remove("active");
-});
+overlay.addEventListener("click", closeNav);
 
 sideNav.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", () => {
-        sideNav.classList.remove("active");
-        overlay.classList.remove("active");
-    });
+    link.addEventListener("click", closeNav);
 });
+
+function closeNav(){
+    sideNav.classList.remove("active");
+    overlay.classList.remove("active");
+    hamburger.classList.remove("active");
+}
 </script>
-
-
     <!-- HERO -->
     <section class="hero">
         <h1>Micro<span>X</span></h1>
