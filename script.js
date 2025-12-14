@@ -101,3 +101,19 @@ function animateEquations() {
 }
 
 animateEquations();
+<script>
+function toggleMenu(){
+    const menu = document.getElementById("menu-panel");
+    menu.style.display = (menu.style.display === "flex") ? "none" : "flex";
+}
+
+/* Close menu when clicking outside */
+document.addEventListener("click", function(e){
+    const menu = document.getElementById("menu-panel");
+    const burger = document.querySelector(".hamburger");
+    if(menu && !menu.contains(e.target) && !burger.contains(e.target)){
+        menu.style.display = "none";
+    }
+});
+</script>
+
