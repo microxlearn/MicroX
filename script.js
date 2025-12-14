@@ -125,3 +125,60 @@ document.addEventListener("DOMContentLoaded", () => {
         hamburger.classList.remove("active");
     });
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const oldNav = document.querySelector("nav");
+    if (!oldNav) return;
+
+    /* Extract logo HTML */
+    const logoHTML = oldNav.querySelector(".nav-left")?.innerHTML || "";
+
+    /* Build new navigation */
+    const newNavHTML = `
+        <nav class="mx-nav">
+            <div class="mx-nav-left">
+                ${logoHTML}
+            </div>
+
+            <div class="mx-nav-right">
+                <div class="mx-hamburger" id="mxHamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="mx-side-nav" id="mxSideNav">
+            <a href="about-us.html">About Us</a>
+            <a href="contact-us.html">Contact Us</a>
+        </div>
+
+        <div class="mx-overlay" id="mxOverlay"></div>
+    `;
+
+    oldNav.insertAdjacentHTML("beforebegin", newNavHTML);
+    oldNav.remove();
+
+    /* Hamburger logic */
+    const hamburger = document.getElementById("mxHamburger");
+    const sideNav = document.getElementById("mxSideNav");
+    const overlay = document.getElementById("mxOverlay");
+
+    if (!hamburger || !sideNav || !overlay) return;
+
+    hamburger.addEventListener("click", () => {
+        const open = sideNav.classList.contains("active");
+        sideNav.classList.toggle("active", !open);
+        overlay.classList.toggle("active", !open);
+        hamburger.classList.toggle("active", !open);
+    });
+
+    overlay.addEventListener("click", () => {
+        sideNav.classList.remove("active");
+        overlay.classList.remove("active");
+        hamburger.classList.remove("active");
+    });
+});
