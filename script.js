@@ -3,43 +3,44 @@
 ---------------------------- */
 window.addEventListener("load", () => {
     document.body.classList.add("loaded");
-});
-/* =====================================
-   MICROX ROTATING LOADER ON PAGE CLICK
-===================================== */
 
-document.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", (e) => {
-
-        if (!link.href.includes("#") && !link.target) {
-
-            e.preventDefault();
-
-            const loader = document.getElementById("loader");
-            loader.classList.add("show");
-
-            setTimeout(() => {
-                window.location = link.href;
-            }, 700);
-        }
-    });
+    const loader = document.getElementById("loader");
+    if (loader) loader.classList.remove("show");
 });
 
+/* ===============================
+   SAFE PAGE NAVIGATION (FIXED)
+   DOES NOT BREAK BUTTONS
+=============================== */
 
+document.addEventListener("click", function (e) {
 
-/* ---------------------------
-   SMOOTH PAGE TRANSITION
----------------------------- */
-document.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", (e) => {
-        if (!link.href.includes("#") && !link.target) {
-            e.preventDefault();
-            document.body.classList.remove("loaded");
-            setTimeout(() => window.location = link.href, 250);
-        }
-    });
+    const link = e.target.closest("a");
+    if (!link) return;
+
+    /* ALLOW NORMAL NAVIGATION FOR THESE */
+    if (
+        link.classList.contains("btn") ||        // HSE / FYUGP
+        link.closest("#mxSideNav") ||            // hamburger menu
+        link.href.includes("#") ||               // in-page links
+        link.target                              // target=_blank
+    ) {
+        return;
+    }
+
+    e.preventDefault();
+
+    const loader = document.getElementById("loader");
+    if (loader) loader.classList.add("show");
+
+    document.body.classList.remove("loaded");
+
+    const href = link.href;
+
+    setTimeout(() => {
+        window.location.href = href;
+    }, 400);
 });
-
 
 /* ---------------------------
    GLASS RIPPLE BUTTON
@@ -53,11 +54,10 @@ document.querySelectorAll(".btn").forEach(btn => {
 });
 
 /* ---------------------------
-   FLOATING MATH EQUATIONS (70% speed)
+   FLOATING TEXT / EQUATIONS
 ---------------------------- */
 
-const equations = ["BCA", "COMMERCE", "SCIENCE", "HUMANITIES", "BBA", "BA", "Bcom", "Σ", "θ"];
-
+const equations = ["BCA", "COMMERCE", "SCIENCE", "HUMANITIES", "BBA", "BA", "BCom", "Σ", "θ"];
 const equationElements = [];
 
 function createEquation() {
@@ -76,8 +76,6 @@ function createEquation() {
         el: eq,
         x: parseFloat(eq.style.left),
         y: parseFloat(eq.style.top),
-
-        /* ↓↓↓ SLOWER SPEED HERE ↓↓↓ */
         vx: (Math.random() - 0.5) * 0.10,
         vy: (Math.random() - 0.5) * 0.10
     });
@@ -101,3 +99,29 @@ function animateEquations() {
 }
 
 animateEquations();
+
+/* ===============================
+   MICROX HAMBURGER NAV TOGGLE
+=============================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const hamburger = document.getElementById("mxHamburger");
+    const sideNav = document.getElementById("mxSideNav");
+    const overlay = document.getElementById("mxOverlay");
+
+    if (!hamburger || !sideNav || !overlay) return;
+
+    hamburger.addEventListener("click", () => {
+        const open = sideNav.classList.contains("active");
+
+        sideNav.classList.toggle("active", !open);
+        overlay.classList.toggle("active", !open);
+        hamburger.classList.toggle("active", !open);
+    });
+
+    overlay.addEventListener("click", () => {
+        sideNav.classList.remove("active");
+        overlay.classList.remove("active");
+        hamburger.classList.remove("active");
+    });
+});
