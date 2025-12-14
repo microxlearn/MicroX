@@ -34,16 +34,24 @@
 
 
     <!-- NAVBAR -->
-    <nav>
-        <div class="nav-left">
-            <img src="assets/namelogo.png" alt="MicroX Logo">
-        </div>
+<nav class="navbar">
+    <div class="nav-left">
+        <img src="assets/namelogo.png" alt="MicroX Logo">
+    </div>
 
-        <div class="nav-right">
-            <a href="about-us.html">About-Us</a><br>
-            <a href="contact-us.html">Contact us</a>
+    <div class="nav-right">
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
-    </nav>
+    </div>
+</nav>
+
+<div id="menu-panel">
+    <a href="about-us.html">About Us</a>
+    <a href="contact-us.html">Contact Us</a>
+</div>
 
     <!-- HERO -->
     <section class="hero">
