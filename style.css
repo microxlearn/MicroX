@@ -39,8 +39,6 @@ nav {
     display: flex;
     align-items: center;
     gap: 30px;
-
-    /* ✅ FIX 1: allow wrapping */
     flex-wrap: wrap;
 }
 
@@ -48,8 +46,6 @@ nav {
     text-decoration: none;
     color: inherit;
     font-size: 16px;
-
-    /* ✅ FIX 2: force visible box */
     display: inline-block;
 }
 
@@ -78,7 +74,7 @@ nav {
 }
 
 /* =========================================
-   GLASS BUTTON STYLE (UNCHANGED)
+   GLASS BUTTON STYLE
 ========================================= */
 .btn {
     display: inline-flex;
@@ -156,7 +152,7 @@ section:has(> .btn) {
 }
 
 /* =========================================
-   FLOATING EQUATIONS (VISUAL ONLY)
+   FLOATING EQUATIONS
 ========================================= */
 .floating-equation {
     position: fixed;
@@ -170,7 +166,7 @@ section:has(> .btn) {
 }
 
 /* =========================================
-   LOADER (CLICK SAFE)
+   LOADER
 ========================================= */
 #loader {
     position: fixed;
@@ -198,7 +194,6 @@ section:has(> .btn) {
 /* =========================================
    MICROX NEW NAV (HAMBURGER)
 ========================================= */
-
 .mx-nav {
     display: flex;
     justify-content: space-between;
@@ -283,10 +278,4 @@ section:has(> .btn) {
 
 .mx-overlay.active {
     display: block;
-}
-
-
-
-.nav-left a {
-    cursor: pointer;
 }
