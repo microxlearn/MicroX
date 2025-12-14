@@ -17,7 +17,9 @@ body.loaded {
     opacity: 1;
 }
 
-/* NAVBAR */
+/* =========================================
+   BASE NAV (OLD NAV SUPPORT)
+========================================= */
 nav {
     width: 100%;
     padding: 15px 60px;
@@ -45,7 +47,9 @@ nav {
     font-size: 16px;
 }
 
-/* HERO */
+/* =========================================
+   HERO
+========================================= */
 .hero {
     text-align: center;
     padding: 60px 20px;
@@ -67,45 +71,36 @@ nav {
     line-height: 1.6;
 }
 
-/* =================================================
-   GLASS BUTTON STYLE (UNCHANGED LOOK)
-================================================= */
-
+/* =========================================
+   GLASS BUTTON STYLE (UNCHANGED)
+========================================= */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     padding: 10px 28px;
     border-radius: 40px;
-
     font-size: 18px;
     font-weight: 600;
     color: #000;
-
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(14px) saturate(180%);
     -webkit-backdrop-filter: blur(14px) saturate(180%);
-
     border: 2px solid rgba(0, 98, 255, 0.25);
     text-decoration: none;
-
     transition: 0.25s ease;
     position: relative;
     overflow: hidden;
-
     box-shadow:
         0 8px 24px rgba(0, 0, 0, 0.12),
         inset 0 2px 8px rgba(255, 255, 255, 0.3);
 }
 
-/* Hover */
 .btn:hover {
     transform: scale(1.05);
     border-color: rgba(0, 120, 255, 0.55);
 }
 
-/* Shine effect */
 .btn::after {
     content: "";
     position: absolute;
@@ -125,38 +120,38 @@ nav {
     top: 0%;
 }
 
-/* =================================================
-   FULL-WIDTH BUTTON LAYOUT (TOP → BOTTOM)
-================================================= */
-
-.hero-buttons {
-    margin-top: 40px;
-    display: flex;
-    flex-direction: column;      /* STACK TOP → BOTTOM */
-    align-items: center;
-    gap: 25px;
+/* =========================================
+   GLOBAL VERTICAL FULL-WIDTH BUTTONS
+========================================= */
+.hero-buttons,
+.buttons,
+.button-group,
+.actions,
+div:has(> .btn),
+section:has(> .btn) {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 22px !important;
 }
 
-.hero-buttons .btn {
-    width: 100%;                 /* FULL WIDTH */
-    max-width: 520px;            /* DESKTOP LIMIT */
+.btn {
+    width: 100% !important;
+    max-width: 520px !important;
+    justify-content: center !important;
 }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    nav { padding: 15px 20px; }
-    .hero h1 { font-size: 34px; }
-
-    .hero-buttons .btn {
-        max-width: 100%;
+@media (max-width: 600px) {
+    .btn {
+        max-width: 100% !important;
         font-size: 16px;
+        padding: 8px 22px;
     }
 }
 
-/* =================================================
+/* =========================================
    FLOATING EQUATIONS (VISUAL ONLY)
-================================================= */
-
+========================================= */
 .floating-equation {
     position: fixed;
     color: #0037ff;
@@ -168,10 +163,9 @@ nav {
     font-size: 22px;
 }
 
-/* =================================================
+/* =========================================
    LOADER (CLICK SAFE)
-================================================= */
-
+========================================= */
 #loader {
     position: fixed;
     inset: 0;
@@ -195,15 +189,17 @@ nav {
     height: 70px;
 }
 
-/* =================================================
-   MICROX HAMBURGER NAVIGATION
-================================================= */
+/* =========================================
+   MICROX NEW NAV (HAMBURGER)
+========================================= */
 
+/* 🔽 RIGHT PADDING REDUCED HERE 🔽 */
 .mx-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 18px;
+    padding: 15px 20px;   /* <-- hamburger closer to right */
+    border-bottom: 1px solid #eee;
     background: #fff;
     position: relative;
     z-index: 2000;
@@ -213,6 +209,7 @@ nav {
     height: 40px;
 }
 
+/* Hamburger */
 .mx-hamburger {
     width: 34px;
     height: 26px;
@@ -245,6 +242,7 @@ nav {
     bottom: 11px;
 }
 
+/* Side Nav */
 .mx-side-nav {
     position: fixed;
     top: 0;
@@ -253,7 +251,7 @@ nav {
     height: 100%;
     background: #fff;
     padding: 80px 30px;
-    transition: right 0.35s ease;
+    transition: right .35s ease;
     z-index: 1990;
 }
 
@@ -269,6 +267,7 @@ nav {
     margin-bottom: 20px;
 }
 
+/* Overlay */
 .mx-overlay {
     position: fixed;
     inset: 0;
@@ -279,128 +278,4 @@ nav {
 
 .mx-overlay.active {
     display: block;
-}
-/* ============================================
-   GLOBAL VERTICAL FULL-WIDTH BUTTON SYSTEM
-   (APPLIES TO ALL PAGES)
-============================================ */
-
-/* Any container holding buttons becomes vertical */
-.hero-buttons,
-.buttons,
-.button-group,
-.actions,
-div:has(> .btn),
-section:has(> .btn) {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 22px !important;
-}
-
-/* ALL buttons – full width */
-.btn,
-a.btn,
-button.btn {
-    width: 100% !important;
-    max-width: 520px !important;   /* desktop width control */
-    justify-content: center !important;
-}
-
-/* Mobile: edge-to-edge */
-@media (max-width: 600px) {
-    .btn,
-    a.btn,
-    button.btn {
-        max-width: 100% !important;
-    }
-}
-
-
-/* ===== MICROX GLOBAL NAV UPGRADE ===== */
-
-.mx-nav{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 60px;
-    border-bottom:1px solid #eee;
-    background:#fff;
-    position:relative;
-    z-index:2000;
-}
-
-.mx-nav-left img{
-    height:40px;
-}
-
-/* Hamburger */
-.mx-hamburger{
-    width:34px;
-    height:26px;
-    cursor:pointer;
-    position:relative;
-}
-
-.mx-hamburger span{
-    position:absolute;
-    left:0;
-    width:100%;
-    height:3px;
-    background:#000;
-    transition:.3s;
-}
-
-.mx-hamburger span:nth-child(1){top:0;}
-.mx-hamburger span:nth-child(2){top:11px;}
-.mx-hamburger span:nth-child(3){bottom:0;}
-
-.mx-hamburger.active span:nth-child(1){
-    transform:rotate(45deg);
-    top:11px;
-}
-.mx-hamburger.active span:nth-child(2){
-    opacity:0;
-}
-.mx-hamburger.active span:nth-child(3){
-    transform:rotate(-45deg);
-    bottom:11px;
-}
-
-/* Side Nav */
-.mx-side-nav{
-    position:fixed;
-    top:0;
-    right:-260px;
-    width:260px;
-    height:100%;
-    background:#fff;
-    padding:80px 30px;
-    transition:right .35s ease;
-    z-index:1990;
-}
-
-.mx-side-nav.active{
-    right:0;
-}
-
-.mx-side-nav a{
-    display:block;
-    text-decoration:none;
-    color:#000;
-    font-size:18px;
-    margin-bottom:20px;
-}
-
-/* Overlay */
-.mx-overlay{
-    position:fixed;
-    inset:0;
-    background:transparent;
-    display:none;
-    z-index:1980;
-}
-
-.mx-overlay.active{
-    display:block;
 }
