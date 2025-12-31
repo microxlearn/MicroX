@@ -13,158 +13,164 @@
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:Inter,system-ui,-apple-system,sans-serif
+  font-family:Inter,system-ui,-apple-system,sans-serif;
 }
 
 /* ===== THEME ===== */
 :root{
-  --bg:#05060f;
-  --panel:#0c1022;
-  --text:#f3f5ff;
-  --muted:#a5acd8;
-  --gold:#f5c46b;
-  --gold-soft:#ffdd9c;
-  --blue:#6b86ff;
+  --paper:#f6f3ee;
+  --paper-dark:#efe9df;
+  --text:#2b2b2b;
+  --muted:#7a7a7a;
+  --gold:#c9a24d;
+  --gold-soft:#e6c97a;
+  --accent:#8b1e2d;
 }
 
 /* ===== BODY ===== */
 body{
-  background:
-    radial-gradient(900px 450px at top,#12173a 0%,transparent 60%),
-    linear-gradient(var(--bg),#02030a);
+  background:linear-gradient(var(--paper),var(--paper-dark));
   color:var(--text);
   min-height:100vh;
   overflow-x:hidden;
+  position:relative;
+}
+
+/* ===== GOLDEN GLOW FALL ===== */
+.glow{
+  position:fixed;
+  top:-10%;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:radial-gradient(circle,
+    rgba(201,162,77,.9),
+    rgba(201,162,77,.4),
+    transparent 70%);
+  opacity:.35;
+  pointer-events:none;
+  filter:blur(.6px);
+  z-index:0;
+  animation:glowFall linear infinite;
+}
+
+@keyframes glowFall{
+  from{
+    transform:translateY(0) translateX(0);
+  }
+  to{
+    transform:translateY(120vh) translateX(20px);
+  }
 }
 
 /* ===== NAV ===== */
 nav{
-  position:absolute;
-  top:0;
-  width:100%;
-  padding:18px 56px;
+  padding:12px 16px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  z-index:5;
+  position:relative;
+  z-index:2;
 }
+
+nav img{height:28px}
 
 nav a{
   color:var(--muted);
   text-decoration:none;
-  margin-left:26px;
-  font-size:14px;
+  font-size:13px;
+  margin-left:14px;
 }
-nav a:hover{color:var(--text)}
+nav a:hover{color:var(--accent)}
 
 /* ===== HERO ===== */
 .hero{
-  min-height:100vh;
+  min-height:calc(100vh - 70px);
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
   text-align:center;
+  padding:20px 16px;
   position:relative;
+  z-index:2;
 }
 
-/* Happy New Year */
+/* ===== TEXT ===== */
 .greeting{
-  font-size:clamp(42px,6vw,84px);
+  font-size:clamp(30px,7vw,48px);
   font-weight:700;
-  letter-spacing:-1px;
   background:linear-gradient(135deg,var(--gold),var(--gold-soft));
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
-  text-shadow:0 0 40px rgba(245,196,107,.35);
 }
 
-/* sub line */
 .sub{
-  margin-top:12px;
-  font-size:16px;
-  color:var(--muted);
-  letter-spacing:.4px;
+  margin-top:6px;
+  font-size:14px;
+  color:var(--accent);
 }
 
-/* divider */
 .divider{
-  width:120px;
-  height:2px;
+  width:90px;
+  height:1px;
   background:linear-gradient(90deg,transparent,var(--gold),transparent);
-  margin:34px auto;
+  margin:18px auto;
 }
 
-/* brand */
 .brand{
-  font-size:34px;
+  font-size:24px;
   font-weight:600;
-  letter-spacing:.5px;
 }
-.brand span{color:var(--blue)}
+.brand span{color:var(--accent)}
 
 .tagline{
-  margin-top:8px;
-  font-size:14px;
-  color:var(--muted);
+  margin-top:4px;
+  font-size:12px;
+  color:var(--accent);
+  opacity:.85;
 }
 
-/* buttons */
+/* ===== ACTIONS ===== */
 .actions{
-  margin-top:48px;
+  margin-top:28px;
   display:flex;
-  gap:22px;
+  flex-direction:column;
+  gap:12px;
+  width:100%;
+  max-width:280px;
 }
 
+/* ===== BUTTONS ===== */
 .btn{
-  padding:13px 34px;
-  border-radius:30px;
-  border:1px solid rgba(255,255,255,.18);
-  color:var(--text);
+  padding:12px 0;
+  border-radius:26px;
+  border:1.2px solid rgba(201,162,77,.45);
+  background:#ffffff;
   text-decoration:none;
+  color:var(--text);
   font-size:14px;
-  transition:.35s ease;
-  background:rgba(255,255,255,.04);
-  backdrop-filter:blur(6px);
+  transition:.2s ease;
 }
 
 .btn.primary{
   background:linear-gradient(135deg,var(--gold),var(--gold-soft));
-  color:#1a1206;
   border:none;
+  color:#2a1a05;
 }
 
-.btn:hover{
-  transform:translateY(-3px);
-  box-shadow:0 22px 60px rgba(0,0,0,.45);
-}
-
-/* ===== SNOW ===== */
-.snow{
-  position:fixed;
-  top:-10px;
-  width:2px;
-  height:2px;
-  background:#fff;
-  border-radius:50%;
-  opacity:.4;
-  animation:snow linear infinite;
-  pointer-events:none;
+.btn:active{
+  transform:scale(.98);
 }
 
 /* ===== FOOTER ===== */
 footer{
-  position:absolute;
-  bottom:22px;
-  width:100%;
+  padding:10px 0;
   text-align:center;
-  font-size:12px;
-  color:#7078b5;
-}
-
-/* ===== ANIMATION ===== */
-@keyframes snow{
-  to{transform:translateY(110vh)}
+  font-size:11px;
+  color:#8a8a8a;
+  position:relative;
+  z-index:2;
 }
 </style>
 </head>
@@ -173,7 +179,7 @@ footer{
 
 <!-- NAV -->
 <nav>
-  <img src="assets/namelogo.png" height="34" alt="MicroX">
+  <img src="assets/namelogo.png" alt="MicroX">
   <div>
     <a href="about-us.html">About</a>
     <a href="contact-us.html">Contact</a>
@@ -184,7 +190,7 @@ footer{
 <section class="hero">
 
   <div class="greeting">Happy New Year</div>
-  <div class="sub">A fresh chapter begins with clarity and purpose</div>
+  <div class="sub">A fresh chapter begins</div>
 
   <div class="divider"></div>
 
@@ -194,25 +200,31 @@ footer{
   <div class="actions">
     <a href="higher-secondary.html" class="btn">Higher Secondary</a>
     <a href="ug/ug.html" class="btn primary">FYUGP</a>
-                <a href="https://microxuploadcommunitiy.lovable.app" class="btn">COMMUNIY UPLOADS</a>
+    <a href="https://microxuploadcommunitiy.lovable.app" class="btn">
+      Community Uploads
+    </a>
   </div>
 
 </section>
 
 <footer>
-© <span id="y"></span> MicroX · All rights reserved
+© <span id="y"></span> MicroX
 </footer>
 
 <script>
 document.getElementById("y").textContent=new Date().getFullYear();
 
-/* snow generation */
-for(let i=0;i<140;i++){
-  const s=document.createElement("div");
-  s.className="snow";
-  s.style.left=Math.random()*100+"vw";
-  s.style.animationDuration=10+Math.random()*18+"s";
-  document.body.appendChild(s);
+/* golden glow generator (mobile-safe) */
+const glowCount = window.innerWidth < 600 ? 18 : 28;
+
+for(let i=0;i<glowCount;i++){
+  const g=document.createElement("div");
+  g.className="glow";
+  g.style.left=Math.random()*100+"vw";
+  g.style.animationDuration=(18+Math.random()*22)+"s";
+  g.style.opacity=0.2+Math.random()*0.35;
+  g.style.transform=`scale(${0.6+Math.random()})`;
+  document.body.appendChild(g);
 }
 </script>
 
