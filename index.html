@@ -1,232 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MicroX</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MicroX</title>
 
-<link rel="icon" href="/favicon.ico">
+     <link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="/favicon.png" type="image/png">
 
-<style>
-/* ===== RESET ===== */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Inter,system-ui,-apple-system,sans-serif;
-}
+   
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5001793692873300"
+     crossorigin="anonymous"></script>
 
-/* ===== THEME ===== */
-:root{
-  --paper:#f6f3ee;
-  --paper-dark:#efe9df;
-  --text:#2b2b2b;
-  --muted:#7a7a7a;
-  --gold:#c9a24d;
-  --gold-soft:#e6c97a;
-  --accent:#8b1e2d;
-}
 
-/* ===== BODY ===== */
-body{
-  background:linear-gradient(var(--paper),var(--paper-dark));
-  color:var(--text);
-  min-height:100vh;
-  overflow-x:hidden;
-  position:relative;
-}
-
-/* ===== GOLDEN GLOW FALL ===== */
-.glow{
-  position:fixed;
-  top:-10%;
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:radial-gradient(circle,
-    rgba(201,162,77,.9),
-    rgba(201,162,77,.4),
-    transparent 70%);
-  opacity:.35;
-  pointer-events:none;
-  filter:blur(.6px);
-  z-index:0;
-  animation:glowFall linear infinite;
-}
-
-@keyframes glowFall{
-  from{
-    transform:translateY(0) translateX(0);
-  }
-  to{
-    transform:translateY(120vh) translateX(20px);
-  }
-}
-
-/* ===== NAV ===== */
-nav{
-  padding:12px 16px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  position:relative;
-  z-index:2;
-}
-
-nav img{height:28px}
-
-nav a{
-  color:var(--muted);
-  text-decoration:none;
-  font-size:13px;
-  margin-left:14px;
-}
-nav a:hover{color:var(--accent)}
-
-/* ===== HERO ===== */
-.hero{
-  min-height:calc(100vh - 70px);
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:20px 16px;
-  position:relative;
-  z-index:2;
-}
-
-/* ===== TEXT ===== */
-.greeting{
-  font-size:clamp(30px,7vw,48px);
-  font-weight:700;
-  background:linear-gradient(135deg,var(--gold),var(--gold-soft));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-
-.sub{
-  margin-top:6px;
-  font-size:14px;
-  color:var(--accent);
-}
-
-.divider{
-  width:90px;
-  height:1px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-  margin:18px auto;
-}
-
-.brand{
-  font-size:24px;
-  font-weight:600;
-}
-.brand span{color:var(--accent)}
-
-.tagline{
-  margin-top:4px;
-  font-size:12px;
-  color:var(--accent);
-  opacity:.85;
-}
-
-/* ===== ACTIONS ===== */
-.actions{
-  margin-top:28px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  width:100%;
-  max-width:280px;
-}
-
-/* ===== BUTTONS ===== */
-.btn{
-  padding:12px 0;
-  border-radius:26px;
-  border:1.2px solid rgba(201,162,77,.45);
-  background:#ffffff;
-  text-decoration:none;
-  color:var(--text);
-  font-size:14px;
-  transition:.2s ease;
-}
-
-.btn.primary{
-  background:linear-gradient(135deg,var(--gold),var(--gold-soft));
-  border:none;
-  color:#2a1a05;
-}
-
-.btn:active{
-  transform:scale(.98);
-}
-
-/* ===== FOOTER ===== */
-footer{
-  padding:10px 0;
-  text-align:center;
-  font-size:11px;
-  color:#8a8a8a;
-  position:relative;
-  z-index:2;
-}
-</style>
-</head>
-
-<body>
-
-<!-- NAV -->
-<nav>
-  <img src="assets/namelogo.png" alt="MicroX">
-  <div>
-    <a href="about-us.html">About</a>
-    <a href="contact-us.html">Contact</a>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-
-  <div class="greeting">Happy New Year</div>
-  <div class="sub">A fresh chapter begins</div>
-
-  <div class="divider"></div>
-
-  <div class="brand">Micro<span>X</span></div>
-  <div class="tagline">The goal matters, not the path.</div>
-
-  <div class="actions">
-    <a href="higher-secondary.html" class="btn">Higher Secondary</a>
-    <a href="ug/ug.html" class="btn primary">FYUGP</a>
-    <a href="https://microxuploadcommunitiy.lovable.app" class="btn">
-      Community Uploads
-    </a>
-  </div>
-
-</section>
-
-<footer>
-© <span id="y"></span> MicroX
-</footer>
-
-<script>
-document.getElementById("y").textContent=new Date().getFullYear();
-
-/* golden glow generator (mobile-safe) */
-const glowCount = window.innerWidth < 600 ? 18 : 28;
-
-for(let i=0;i<glowCount;i++){
-  const g=document.createElement("div");
-  g.className="glow";
-  g.style.left=Math.random()*100+"vw";
-  g.style.animationDuration=(18+Math.random()*22)+"s";
-  g.style.opacity=0.2+Math.random()*0.35;
-  g.style.transform=`scale(${0.6+Math.random()})`;
-  document.body.appendChild(g);
+   <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "url": "https://microxlearn.online/",
+  "logo": "https://microxlearn.online/favicon.ico"
 }
 </script>
 
+</head>
+
+<body>
+<div id="loader">
+    <div class="loader-line-left"></div>
+    <img src="assets/logo.png" class="loader-logo">
+    <div class="loader-line-right"></div>
+</div>
+
+
+
+     <!-- NAVBAR -->
+<nav>
+    <div class="nav-left">
+        <a href="server-information.html">
+            <img src="assets/namelogo.png" alt="MicroX Logo" style="height:40px;">
+        </a>
+        <span style="font-size:22px; margin-left:8px;"></span>
+    </div>
+
+    <div class="nav-right">
+        <a href="about-us.html">About-Us</a><br>
+        <a href="contact-us.html">Contact us</a>
+    </div>
+</nav>
+
+
+
+
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Micro<span>X</span></h1>
+
+        <p>The goal matters, not the path.</p>
+<br><br>
+        <div class="hero-buttons">
+            <a href="higher-secondary.html" class="btn">HSE</a>
+            <a href="ug/ug.html" class="btn">FYUGP</a>
+        </div>
+    </section>
+    <section id="microx-content" style="max-width:980px; margin:0 auto; padding:40px 20px; font-size:14px; font-weight:300; line-height:1.8; color:#333;">
+
+<h4>About Micro<span style="color:#0037ff;">X</span></h4>
+
+<p>
+MicroX is an independent digital learning platform created with the intention of making academic study simpler, clearer, and more accessible for students in Higher Secondary and Undergraduate education. The platform is designed for learners who seek structured knowledge rather than scattered information, and who value conceptual understanding over rote memorization. MicroX focuses on presenting educational content in a way that reduces confusion and builds confidence, allowing students to approach their studies with clarity and purpose. In an era where students are exposed to overwhelming amounts of online content, MicroX stands out by maintaining a disciplined, syllabus-oriented approach that aligns closely with official academic frameworks.
+</p>
+
+<p>
+The foundation of MicroX lies in the belief that effective learning begins with well-organized material. Many students struggle not because they lack ability, but because they lack access to resources that explain concepts in a simple and logical manner. MicroX addresses this issue by offering study materials that are carefully structured and written in clear language. Each topic is approached step by step, ensuring that learners can follow the flow of ideas without feeling lost. This approach supports students from different academic backgrounds, including those who prefer self-study and those who require additional academic reinforcement.
+</p>
+
+<p>
+MicroX also emphasizes consistency in presentation and quality. Instead of providing fragmented notes from multiple sources, the platform maintains a uniform style across subjects and levels. This consistency helps students adapt quickly to the learning format and spend more time understanding concepts rather than adjusting to different writing styles. By prioritizing clarity, relevance, and structure, MicroX aims to become a dependable learning companion throughout a student’s academic journey.
+</p>
+
+<h4>Purpose and Visio<span style="color:#0037ff;">n</span></h4>
+
+<p>
+The purpose of MicroX is rooted in the idea that education should be accessible, understandable, and meaningful. Learning should not feel like an overwhelming task filled with unnecessary complexity. MicroX was created to reduce academic stress by providing focused study resources that highlight what truly matters in the curriculum. The platform is designed to support students who wish to learn independently, revise effectively, and prepare confidently for examinations without relying solely on external coaching or expensive reference materials.
+</p>
+
+<p>
+MicroX envisions a learning environment where students are empowered to take control of their education. By offering clearly defined study materials, the platform encourages disciplined learning habits and thoughtful engagement with academic content. The vision is not limited to exam preparation alone, but extends to building a strong conceptual foundation that supports long-term academic growth. MicroX aims to nurture learners who understand subjects deeply and can apply their knowledge with confidence.
+</p>
+
+<p>
+As education systems continue to evolve, MicroX remains committed to adapting and improving. The platform’s long-term vision includes expanding subject coverage, refining content quality, and aligning continuously with curriculum updates. By maintaining a learner-centric approach and focusing on academic integrity, MicroX seeks to establish itself as a trusted digital resource that grows alongside its users.
+</p>
+
+<h4>Academic Coverage and Learning Approac<span style="color:#0037ff;">h</span></h4>
+
+<p>
+MicroX supports a wide range of academic programs, with a primary focus on Higher Secondary and Undergraduate education. For Higher Secondary students, the platform covers Plus One and Plus Two subjects across Science, Commerce, and Humanities streams. For Undergraduate learners, MicroX provides study materials aligned with university-level curricula, including frameworks such as FYUGP. This broad coverage ensures that students from different academic paths can find relevant learning resources under one platform.
+</p>
+
+<p>
+The learning approach adopted by MicroX is both conceptual and exam-oriented. Study materials are prepared with careful consideration of syllabus objectives, topic weightage, and common assessment patterns. This balanced approach allows students to develop a strong understanding of concepts while remaining focused on examination requirements. Rather than promoting memorization, MicroX encourages logical thinking and clarity, helping students retain knowledge more effectively.
+</p>
+
+<p>
+Each subject on MicroX is organized in a way that allows students to progress systematically. Topics are introduced gradually, building from basic concepts to more advanced ideas. This progression helps learners develop confidence as they move forward, reducing the fear and uncertainty often associated with complex subjects. By maintaining a clear academic structure, MicroX enables students to study efficiently and with purpose.
+</p>
+
+<h4>Microcopy PDFs and Smart Revisio<span style="color:#0037ff;">n</span></h4>
+
+<p>
+One of the distinctive features of MicroX is the availability of microcopy PDFs, which are designed specifically for efficient revision. These compact documents summarize chapters or units into concise formats, focusing on essential concepts, definitions, and key points. Microcopy PDFs are particularly useful for students who need quick reinforcement of topics before tests, examinations, or classroom discussions.
+</p>
+
+<p>
+The strength of microcopy materials lies in their simplicity and focus. By eliminating unnecessary explanations and highlighting core ideas, these PDFs help students revise effectively within a limited time. They are suitable for repeated reading, enabling learners to reinforce important concepts through regular revision. The lightweight and mobile-friendly nature of these documents ensures that students can access them conveniently across different devices.
+</p>
+
+<p>
+Microcopy PDFs complement the detailed study notes available on MicroX. While full notes provide comprehensive explanations, microcopy materials serve as quick reference tools that enhance recall and exam readiness. This combination supports a flexible learning strategy, allowing students to adapt their study methods according to their academic needs and time availability.
+</p>
+
+<h4>User Experience, Ethics, and Conclusio<span style="color:#0037ff;">n</span></h4>
+
+<p>
+MicroX is designed with a strong emphasis on user experience. The platform features a clean and distraction-free interface that allows students to focus entirely on learning. Navigation is kept simple, and content is presented in a readable format that supports prolonged study sessions. Whether accessed on a desktop or a mobile device, MicroX ensures smooth performance and easy readability.
+</p>
+
+<p>
+Ethical education forms the core of MicroX’s philosophy. All content is created with the intention of supporting genuine learning and academic honesty. The platform does not promote shortcuts, misleading practices, or unethical academic behavior. Instead, it encourages students to use the materials responsibly as a supplement to textbooks and classroom instruction.
+</p>
+
+<p>
+In conclusion, MicroX represents a thoughtful approach to digital education. By combining structured study materials, microcopy PDFs, and a learner-friendly design, the platform supports students in achieving clarity, confidence, and academic success. MicroX continues to grow with a clear purpose and a strong commitment to quality education, guided by the belief that the goal matters more than the path.
+</p>
+
+</section>
+
+<script src="script.js"></script>
+
+<footer style="text-align:center; font-size:12px; font-family:Arial, sans-serif; color:#888; margin-top:40px;">
+    © <span id="year"></span> MicroX. All rights reserved. |
+    <a href="privacy-policy.html" style="color:#888; text-decoration:none;">Privacy Policy</a><br>
+    Developed by MicroX Team
+</footer>
+
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
 </body>
+
+
+
 </html>
