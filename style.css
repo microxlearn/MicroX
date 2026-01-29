@@ -279,3 +279,167 @@ section:has(> .btn) {
 .mx-overlay.active {
     display: block;
 }
+/* =========================================
+   MICROX FLOATING AI ASSISTANT BUTTON
+========================================= */
+#microx-ai-btn {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0037ff, #5b7cff);
+    box-shadow: 0 6px 18px rgba(0, 55, 255, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3000;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#microx-ai-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 24px rgba(0, 55, 255, 0.45);
+}
+
+#microx-ai-btn span {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: "Poppins", sans-serif;
+    user-select: none;
+}
+/* =========================================
+   MICROX AI BOT – MESSAGE STYLE ICON
+========================================= */
+#microx-ai-btn {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+    text-decoration: none;
+    overflow: hidden;
+}
+
+/* Logo */
+#microx-ai-btn img {
+    width: 72%;
+    height: 72%;
+    object-fit: contain;
+}
+
+/* Overlay label */
+#microx-ai-btn .ai-label {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 55, 255, 0.92);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    padding: 3px 0;
+    line-height: 1;
+    font-family: "Poppins", sans-serif;
+}
+/* =========================================
+   MICROX AI BOT – POPUP + FLOATING EFFECT
+========================================= */
+
+/* Initial popup animation */
+@keyframes mx-pop {
+    0% {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Continuous up-down floating */
+@keyframes mx-float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+#microx-ai-btn {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+    text-decoration: none;
+    overflow: hidden;
+
+    animation:
+        mx-pop 0.6s ease-out forwards,
+        mx-float 2.2s ease-in-out infinite;
+}
+
+/* Logo */
+#microx-ai-btn img {
+    width: 72%;
+    height: 72%;
+    object-fit: contain;
+}
+
+/* Overlay text */
+#microx-ai-btn .ai-label {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 55, 255, 0.95);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+    padding: 3px 0;
+    line-height: 1;
+    font-family: "Poppins", sans-serif;
+}
+/* =========================================
+   MICROX AI BOT – SIZE REDUCTION (15%)
+========================================= */
+#microx-ai-btn {
+    width: 53px;   /* was 62px → ~15% reduced */
+    height: 53px;
+}
+
+#microx-ai-btn img {
+    width: 68%;    /* slightly reduced to match */
+    height: 68%;
+}
+
+#microx-ai-btn .ai-label {
+    font-size: 9px;   /* scaled down proportionally */
+    padding: 2px 0;
+}
