@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostgreSQL Ubuntu Terminal – RDBMS LAB</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --sidebar-bg: #1e293b;
+            --text-color: #e2e8f0;
+            --accent-color: #38bdf8;
+            --terminal-bg: #000000;
+            --terminal-text: #22c55e;
+            --terminal-prompt: #3b82f6;
+            --terminal-output: #f8fafc;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 300px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid #334155;
+            position: sticky;
+            top: 0;
+            background-color: var(--sidebar-bg);
+            z-index: 10;
+        }
+
+        .sidebar-header h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #fff;
+            line-height: 1.4;
+        }
+
+        .sidebar-header p {
+            margin: 8px 0 0 0;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        .nav-links {
+            padding: 16px 0;
+            list-style: none;
+            margin: 0;
+        }
+
+        .nav-links li {
+            margin: 0;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 12px 20px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            border-left-color: var(--accent-color);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+            scroll-behavior: smooth;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            max-width: 900px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-top: 0;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #334155;
+        }
+
+        /* Terminal Window */
+        .terminal {
+            background-color: var(--terminal-bg);
+            border-radius: 8px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            border: 1px solid #334155;
+            margin-bottom: 20px;
+        }
+
+        .terminal-header {
+            background-color: #1e293b;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .btn-close { background-color: #ef4444; }
+        .btn-min { background-color: #f59e0b; }
+        .btn-max { background-color: #10b981; }
+
+        .terminal-title {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-left: 16px;
+            font-family: monospace;
+        }
+
+        .terminal-body {
+            padding: 20px;
+            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .line {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .cmd {
+            color: var(--terminal-text);
+        }
+
+        .prompt {
+            color: var(--terminal-prompt);
+            font-weight: bold;
+        }
+
+        .output {
+            color: var(--terminal-output);
+            margin-bottom: 16px;
+            white-space: pre;
+        }
+
+        .comment {
+            color: #64748b;
+            font-style: italic;
+        }
+
+        /* Scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile Menu */
+        .menu-btn {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            background: var(--sidebar-bg);
+            border: 1px solid #334155;
+            color: var(--text-color);
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: background 0.2s ease;
+        }
+
+        .menu-btn:hover {
+            background: #334155;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 998;
+            backdrop-filter: blur(2px);
+        }
+
+        .menu-btn {
+            display: block;
+        }
+        .sidebar {
+            width: 300px;
+            position: fixed;
+            left: -300px;
+            top: 0;
+            bottom: 0;
+            z-index: 999;
+            transition: left 0.3s ease;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+        }
+        .sidebar.show {
+            left: 0;
+        }
+        .main-content {
+            padding-top: 80px; /* Space for the floating button */
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+        .main-content.shift-right {
+            transform: translateX(300px);
+        }
+        .sidebar-overlay.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="menu-btn" id="menuBtn">☰ Menu</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h1>PostgreSQL Lab</h1>
+            <p>Developed By Amal S Yash (Yashoottan)</p>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#init" class="active">Initialization</a></li>
+            <li><a href="#project1">1. CUSTOMER Table</a></li>
+            <li><a href="#project2">2. HOSPITAL Table</a></li>
+            <li><a href="#project3">3. BANK Database</a></li>
+            <li><a href="#project4">4. PRODUCT Table</a></li>
+            <li><a href="#project5">5. EMPLOYEE Database</a></li>
+            <li><a href="#project6">6. Aggregate & Group By</a></li>
+            <li><a href="#project7">7. Area of Circle</a></li>
+            <li><a href="#project8">8. Prime Number</a></li>
+            <li><a href="#project9">9. Electricity Bill</a></li>
+            <li><a href="#project10">10. Exam Result</a></li>
+            <li><a href="#project12">12. Fibonacci Series</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main ContentArea -->
+    <main class="main-content">
+        
+        <!-- Initialization -->
+        <section id="init" class="section">
+            <h2>PostgreSQL Ubuntu Terminal Initialization</h2>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="btn btn-close"></div>
+                        <div class="btn btn-min"></div>
+                        <div class="btn btn-max"></div>
+                    </div>
+                    <div class="terminal-title">postgres@ubuntu:~</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="line"><span class="prompt">$</span> <span class="cmd">sudo -i -u postgres</span></span>
+                    <span class="line"><span class="prompt">$</span> <span class="cmd">psql</span></span>
+                    <span class="line"><span class="prompt">postgres=#</span> <span class="cmd">\c dvdrsh</span></span>
+                    <span class="line"><span class="output">You are now connected to database "dvdrsh"</span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project 1 -->
+        <section id="project1" class="section">
+            <h2>PROJECT 1 – CUSTOMER TABLE</h2>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="btn btn-close"></div>
+                        <div class="btn btn-min"></div>
+                        <div class="btn btn-max"></div>
+                    </div>
+                    <div class="terminal-title">psql - dvdrsh</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="line comment">-- 1. Create Table CUSTOMER</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE TABLE customer( cus_no varchar(5), cus_name varchar(15), age int, phone varchar(10) );</span></span>
+                    <span class="line"><span class="output">CREATE TABLE</span></span>
+                    
+                    <span class="line comment">-- a) Insert 5 Records</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO customer VALUES('101','nila',23,'98023452');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO customer VALUES('102','arun',21,'98452211');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO customer VALUES('103','maya',24,'97452211');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO customer VALUES('104','ravi',22,'96452211');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO customer VALUES('105','asha',23,'95452211');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    
+                    <span class="line comment">-- Display Records</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM customer;</span></span>
+                    <span class="line"><span class="output"> cus_no | cus_name | age |  phone
+--------+----------+-----+-----------
+ 101    | nila     | 23  | 98023452
+ 102    | arun     | 21  | 98452211
+ 103    | maya     | 24  | 97452211
+ 104    | ravi     | 22  | 96452211
+ 105    | asha     | 23  | 95452211
+(5 rows)</span></span>
+
+                    <span class="line comment">-- b) Add new field d_birth</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">ALTER TABLE customer ADD COLUMN d_birth DATE;</span></span>
+                    <span class="line"><span class="output">ALTER TABLE</span></span>
+
+                    <span class="line comment">-- c) Create Table cust_phone from customer</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE TABLE cust_phone AS SELECT cus_name,phone FROM customer;</span></span>
+                    <span class="line"><span class="output">SELECT 5</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM cust_phone;</span></span>
+                    <span class="line"><span class="output"> cus_name |  phone
+----------+-----------
+ nila     | 98023452
+ arun     | 98452211
+ maya     | 97452211
+ ravi     | 96452211
+ asha     | 95452211
+(5 rows)</span></span>
+
+                    <span class="line comment">-- d) Remove column age</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">ALTER TABLE customer DROP COLUMN age;</span></span>
+                    <span class="line"><span class="output">ALTER TABLE</span></span>
+
+                    <span class="line comment">-- e) Change size of cus_name</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">ALTER TABLE customer ALTER COLUMN cus_name TYPE varchar(25);</span></span>
+                    <span class="line"><span class="output">ALTER TABLE</span></span>
+
+                    <span class="line comment">-- f) Delete all records</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">DELETE FROM customer;</span></span>
+                    <span class="line"><span class="output">DELETE 5</span></span>
+
+                    <span class="line comment">-- g) Rename table customer to cust</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">ALTER TABLE customer RENAME TO cust;</span></span>
+                    <span class="line"><span class="output">ALTER TABLE</span></span>
+
+                    <span class="line comment">-- h) Drop table</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">DROP TABLE cust;</span></span>
+                    <span class="line"><span class="output">DROP TABLE</span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project 2 -->
+        <section id="project2" class="section">
+            <h2>PROJECT 2 – HOSPITAL TABLE</h2>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="btn btn-close"></div>
+                        <div class="btn btn-min"></div>
+                        <div class="btn btn-max"></div>
+                    </div>
+                    <div class="terminal-title">psql - dvdrsh</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE TABLE hospital( doctor_id varchar(15), doctor_name varchar(20), department varchar(15), qualification varchar(10), experience int );</span></span>
+                    <span class="line"><span class="output">CREATE TABLE</span></span>
+                    
+                    <span class="line comment">-- a) Insert 5 Records</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO hospital VALUES('D001','rakesh','Skin','MD',6);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO hospital VALUES('D002','shiya','Cardiology','MBBS',4);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO hospital VALUES('D003','rahul','Emergency','MBBS',3);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO hospital VALUES('D004','meera','Skin','MD',8);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO hospital VALUES('D005','akhil','Ortho','MBBS',7);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+
+                    <span class="line comment">-- b) Display all Doctors</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM hospital;</span></span>
+                    <span class="line"><span class="output"> doctor_id | doctor_name | department | qualification | experience
+-----------+-------------+------------+---------------+-----------
+ D001      | rakesh      | Skin       | MD            | 6
+ D002      | shiya       | Cardiology | MBBS          | 4
+ D003      | rahul       | Emergency  | MBBS          | 3
+ D004      | meera       | Skin       | MD            | 8
+ D005      | akhil       | Ortho      | MBBS          | 7
+(5 rows)</span></span>
+
+                    <span class="line comment">-- c) Doctors with qualification MD</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM hospital WHERE qualification='MD';</span></span>
+                    <span class="line"><span class="output"> doctor_id | doctor_name | department | qualification | experience
+-----------+-------------+------------+---------------+-----------
+ D001      | rakesh      | Skin       | MD            | 6
+ D004      | meera       | Skin       | MD            | 8
+(2 rows)</span></span>
+
+                    <span class="line comment">-- d) Doctors with experience &gt;5 and not MD</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM hospital WHERE experience>5 AND qualification!='MD';</span></span>
+                    <span class="line"><span class="output"> doctor_id | doctor_name | department | qualification | experience
+-----------+-------------+------------+---------------+-----------
+ D005      | akhil       | Ortho      | MBBS          | 7
+(1 row)</span></span>
+
+                    <span class="line comment">-- e) Doctors in Skin department</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM hospital WHERE department='Skin';</span></span>
+                    <span class="line"><span class="output"> doctor_id | doctor_name | department | qualification | experience
+-----------+-------------+------------+---------------+-----------
+ D001      | rakesh      | Skin       | MD            | 6
+ D004      | meera       | Skin       | MD            | 8
+(2 rows)</span></span>
+
+                    <span class="line comment">-- f) Update experience of doctor D003 to 5</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">UPDATE hospital SET experience=5 WHERE doctor_id='D003';</span></span>
+                    <span class="line"><span class="output">UPDATE 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM hospital WHERE doctor_id='D003';</span></span>
+                    <span class="line"><span class="output"> doctor_id | doctor_name | department | qualification | experience
+-----------+-------------+------------+---------------+-----------
+ D003      | rahul       | Emergency  | MBBS          | 5
+(1 row)</span></span>
+
+                    <span class="line comment">-- g) Delete doctor with ID D005</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">DELETE FROM hospital WHERE doctor_id='D005';</span></span>
+                    <span class="line"><span class="output">DELETE 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM hospital;</span></span>
+                    <span class="line"><span class="output"> doctor_id | doctor_name | department | qualification | experience
+-----------+-------------+------------+---------------+-----------
+ D001      | rakesh      | Skin       | MD            | 6
+ D002      | shiya       | Cardiology | MBBS          | 4
+ D003      | rahul       | Emergency  | MBBS          | 5
+ D004      | meera       | Skin       | MD            | 8
+(4 rows)</span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project 3 -->
+        <section id="project3" class="section">
+            <h2>PROJECT 3 – BANK CUSTOMER / DEPOSIT / LOAN</h2>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="btn btn-close"></div>
+                        <div class="btn btn-min"></div>
+                        <div class="btn btn-max"></div>
+                    </div>
+                    <div class="terminal-title">psql - dvdrsh</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE TABLE bank_customer( accno int PRIMARY KEY, cust_name varchar(20), place varchar(20) );</span></span>
+                    <span class="line"><span class="output">CREATE TABLE</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE TABLE deposit( accno int REFERENCES bank_customer(accno), deposit_no int, damount int );</span></span>
+                    <span class="line"><span class="output">CREATE TABLE</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE TABLE loan( accno int REFERENCES bank_customer(accno), loan_no int, lamount int );</span></span>
+                    <span class="line"><span class="output">CREATE TABLE</span></span>
+
+                    <span class="line comment">-- Insert Records</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO bank_customer VALUES(2001,'roy','calicut');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO bank_customer VALUES(2002,'anu','kochi');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO bank_customer VALUES(2003,'hari','trissur');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO bank_customer VALUES(2004,'megha','kannur');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO bank_customer VALUES(2005,'siva','palakkad');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO deposit VALUES(2001,101,20000);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO deposit VALUES(2002,102,15000);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO loan VALUES(2003,201,200000);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO loan VALUES(2001,202,50000);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+
+                    <span class="line comment">-- a) Display customer details</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM bank_customer;</span></span>
+                    <span class="line"><span class="output"> accno | cust_name |  place
+-------+-----------+-----------
+ 2001  | roy       | calicut
+ 2002  | anu       | kochi
+ 2003  | hari      | trissur
+ 2004  | megha     | kannur
+ 2005  | siva      | palakkad
+(5 rows)</span></span>
+
+                    <span class="line comment">-- b) Customers with deposit</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT bank_customer.cust_name,deposit.damount FROM bank_customer INNER JOIN deposit ON bank_customer.accno=deposit.accno;</span></span>
+                    <span class="line"><span class="output"> cust_name | damount
+-----------+---------
+ roy       | 20000
+ anu       | 15000
+(2 rows)</span></span>
+
+                    <span class="line comment">-- c) Customers with loan</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT bank_customer.cust_name,loan.lamount FROM bank_customer INNER JOIN loan ON bank_customer.accno=loan.accno;</span></span>
+                    <span class="line"><span class="output"> cust_name | lamount
+-----------+---------
+ hari      | 200000
+ roy       | 50000
+(2 rows)</span></span>
+
+                    <span class="line comment">-- d) Customers having both loan and deposit</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT bank_customer.cust_name FROM bank_customer INNER JOIN deposit ON bank_customer.accno=deposit.accno INTERSECT SELECT bank_customer.cust_name FROM bank_customer INNER JOIN loan ON bank_customer.accno=loan.accno;</span></span>
+                    <span class="line"><span class="output"> cust_name
+-----------
+ roy
+(1 row)</span></span>
+
+                    <span class="line comment">-- e) Customers with neither loan nor deposit</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT cust_name FROM bank_customer WHERE accno NOT IN (SELECT accno FROM deposit) AND accno NOT IN (SELECT accno FROM loan);</span></span>
+                    <span class="line"><span class="output"> cust_name
+-----------
+ megha
+ siva
+(2 rows)</span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project 4 a-g (Adding remaining projects here...) -->
+        <section id="project4" class="section">
+            <h2>PROJECT 4 – PRODUCT TABLE</h2>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="btn btn-close"></div>
+                        <div class="btn btn-min"></div>
+                        <div class="btn btn-max"></div>
+                    </div>
+                    <div class="terminal-title">psql - dvdrsh</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE TABLE product( product_code int PRIMARY KEY, product_name varchar(20), category varchar(20), quantity int, price int );</span></span>
+                    <span class="line"><span class="output">CREATE TABLE</span></span>
+<span class="line comment">-- Insert Records</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO product VALUES(101,'soap','bath soap',300,25);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO product VALUES(102,'sunsilk','shampoo',80,45);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO product VALUES(103,'surf','washing powder',600,55);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO product VALUES(104,'paste','paste',120,30);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO product VALUES(105,'salt','food',50,20);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line comment">-- a) Records in descending order of Product_Name</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM product ORDER BY product_name DESC;</span></span>
+                    <span class="line"><span class="output"> product_code | product_name | category        | quantity | price
+--------------+--------------+----------------+----------+------
+ 102          | sunsilk      | shampoo        | 80       | 45
+ 103          | surf         | washing powder | 600      | 55
+ 101          | soap         | bath soap      | 300      | 25
+ 105          | salt         | food           | 50       | 20
+ 104          | paste        | paste          | 120      | 30
+(5 rows)</span></span>
+                    <span class="line comment">-- b) Product_Code and Product_Name with price between 20 and 50</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT product_code,product_name FROM product WHERE price BETWEEN 20 AND 50;</span></span>
+                    <span class="line"><span class="output"> product_code | product_name
+--------------+--------------
+ 101          | soap
+ 102          | sunsilk
+ 104          | paste
+ 105          | salt
+(4 rows)</span></span>
+                    <span class="line comment">-- c) Products belonging to bath soap, paste, or washing powder</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM product WHERE category IN ('bath soap','paste','washing powder');</span></span>
+                    <span class="line"><span class="output"> product_code | product_name | category        | quantity | price
+--------------+--------------+----------------+----------+------
+ 101          | soap         | bath soap      | 300      | 25
+ 103          | surf         | washing powder | 600      | 55
+ 104          | paste        | paste          | 120      | 30
+(3 rows)</span></span>
+                    <span class="line comment">-- d) Products with quantity &lt;100 or &gt;500</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM product WHERE quantity<100 OR quantity>500;</span></span>
+                    <span class="line"><span class="output"> product_code | product_name | category        | quantity | price
+--------------+--------------+----------------+----------+------
+ 102          | sunsilk      | shampoo        | 80       | 45
+ 103          | surf         | washing powder | 600      | 55
+ 105          | salt         | food           | 50       | 20
+(3 rows)</span></span>
+                    <span class="line comment">-- e) Products whose name starts with 's'</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT product_name FROM product WHERE product_name LIKE 's%';</span></span>
+                    <span class="line"><span class="output"> product_name
+--------------
+ soap
+ sunsilk
+ surf
+ salt
+(4 rows)</span></span>
+                    <span class="line comment">-- f) Products not belonging to category 'paste'</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM product WHERE category!='paste';</span></span>
+                    <span class="line"><span class="output"> product_code | product_name | category        | quantity | price
+--------------+--------------+----------------+----------+------
+ 101          | soap         | bath soap      | 300      | 25
+ 102          | sunsilk      | shampoo        | 80       | 45
+ 103          | surf         | washing powder | 600      | 55
+ 105          | salt         | food           | 50       | 20
+(4 rows)</span></span>
+                    <span class="line comment">-- g) Products whose second letter is 'u' and category is washing powder</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT product_name FROM product WHERE product_name LIKE '_u%' AND category='washing powder';</span></span>
+                    <span class="line"><span class="output"> product_name
+--------------
+ surf
+(1 row)</span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project 5 -->
+        <section id="project5" class="section">
+            <h2>PROJECT 5 – EMPLOYEE / COMPANY DATABASE</h2>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="btn btn-close"></div>
+                        <div class="btn btn-min"></div>
+                        <div class="btn btn-max"></div>
+                    </div>
+                    <div class="terminal-title">psql - dvdrsh</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE TABLE employee( employee_name varchar(20), city varchar(20) );</span></span>
+                    <span class="line"><span class="output">CREATE TABLE</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE TABLE works( employee_name varchar(20), company_name varchar(20), salary int );</span></span>
+                    <span class="line"><span class="output">CREATE TABLE</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE TABLE company( company_name varchar(20), city varchar(20) );</span></span>
+                    <span class="line"><span class="output">CREATE TABLE</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE TABLE manages( employee_name varchar(20), manager_name varchar(20) );</span></span>
+                    <span class="line"><span class="output">CREATE TABLE</span></span>
+                    <span class="line comment">-- Insert Records</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO employee VALUES('akash','chennai');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO employee VALUES('rahul','bangalore');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO employee VALUES('meera','kochi');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO employee VALUES('anil','bangalore');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO employee VALUES('sita','chennai');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO works VALUES('akash','Infosys',20000);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO works VALUES('rahul','Wipro',15000);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO works VALUES('meera','Infosys',12000);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO works VALUES('anil','TCS',9000);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO works VALUES('sita','Wipro',18000);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO company VALUES('Infosys','bangalore');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO company VALUES('Wipro','bangalore');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO company VALUES('TCS','chennai');</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line comment">-- A) Employees who work in Infosys</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT employee_name FROM works WHERE company_name='Infosys';</span></span>
+                    <span class="line"><span class="output"> employee_name
+---------------
+ akash
+ meera
+(2 rows)</span></span>
+                    <span class="line comment">-- B) Names and cities of employees who work in Wipro</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT works.employee_name,employee.city FROM works JOIN employee ON works.employee_name=employee.employee_name WHERE company_name='Wipro';</span></span>
+                    <span class="line"><span class="output"> employee_name |   city
+---------------+-----------
+ rahul         | bangalore
+ sita          | chennai
+(2 rows)</span></span>
+                    <span class="line comment">-- C) Employees working in Infosys with salary > 10000</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT works.employee_name,employee.city FROM works JOIN employee ON works.employee_name=employee.employee_name WHERE company_name='Infosys' AND salary>10000;</span></span>
+                    <span class="line"><span class="output"> employee_name |   city
+---------------+-----------
+ akash         | chennai
+ meera         | kochi
+(2 rows)</span></span>
+                    <span class="line comment">-- D) Employees living in same city as their company</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT DISTINCT employee.employee_name FROM employee JOIN works ON employee.employee_name=works.employee_name JOIN company ON works.company_name=company.company_name WHERE employee.city=company.city;</span></span>
+                    <span class="line"><span class="output"> employee_name
+---------------
+ rahul
+(1 row)</span></span>
+                    <span class="line comment">-- E) Employees not working in Wipro</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT employee_name FROM works WHERE company_name!='Wipro';</span></span>
+                    <span class="line"><span class="output"> employee_name
+---------------
+ akash
+ meera
+ anil
+(3 rows)</span></span>
+                    <span class="line comment">-- F) Company with most employees</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT company_name,COUNT(*) FROM works GROUP BY company_name ORDER BY COUNT(*) DESC LIMIT 1;</span></span>
+                    <span class="line"><span class="output"> company_name | count
+--------------+-------
+ Infosys      | 2
+(1 row)</span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project 6 -->
+        <section id="project6" class="section">
+            <h2>PROJECT 6 – AGGREGATE FUNCTIONS AND GROUP BY</h2>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="btn btn-close"></div>
+                        <div class="btn btn-min"></div>
+                        <div class="btn btn-max"></div>
+                    </div>
+                    <div class="terminal-title">psql - dvdrsh</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE TABLE employee2( empid varchar(5), ename varchar(20), salary int, department varchar(15), age int );</span></span>
+                    <span class="line"><span class="output">CREATE TABLE</span></span>
+                    <span class="line comment">-- Insert Records</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO employee2 VALUES('E01','arun',25000,'sales',30);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO employee2 VALUES('E02','meera',30000,'sales',35);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO employee2 VALUES('E03','rahul',20000,'purchase',28);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO employee2 VALUES('E04','sita',22000,'purchase',32);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO employee2 VALUES('E05','anil',40000,'accounts',45);</span></span>
+                    <span class="line"><span class="output">INSERT 0 1</span></span>
+                    <span class="line comment">-- B) Total number of employees</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT COUNT(*) FROM employee2;</span></span>
+                    <span class="line"><span class="output"> count
+-------
+ 5
+(1 row)</span></span>
+                    <span class="line comment">-- C) Oldest employee of each department</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT department,MAX(age) FROM employee2 GROUP BY department;</span></span>
+                    <span class="line"><span class="output"> department | max
+------------+-----
+ sales      | 35
+ purchase   | 32
+ accounts   | 45
+(3 rows)</span></span>
+                    <span class="line comment">-- D) Average age of employees in each department</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT department,AVG(age) FROM employee2 GROUP BY department;</span></span>
+                    <span class="line"><span class="output"> department |        avg
+------------+----------------
+ sales      | 32.5
+ purchase   | 30
+ accounts   | 45
+(3 rows)</span></span>
+                    <span class="line comment">-- E) Department and average salary</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT department,AVG(salary) FROM employee2 GROUP BY department;</span></span>
+                    <span class="line"><span class="output"> department |  avg
+------------+-------
+ sales      | 27500
+ purchase   | 21000
+ accounts   | 40000
+(3 rows)</span></span>
+                    <span class="line comment">-- F) Lowest salary</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT MIN(salary) FROM employee2;</span></span>
+                    <span class="line"><span class="output"> min
+------
+ 20000
+(1 row)</span></span>
+                    <span class="line comment">-- G) Employees in purchase department</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT COUNT(*) FROM employee2 WHERE department='purchase';</span></span>
+                    <span class="line"><span class="output"> count
+-------
+ 2
+(1 row)</span></span>
+                    <span class="line comment">-- H) Highest salary in sales department</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT MAX(salary) FROM employee2 WHERE department='sales';</span></span>
+                    <span class="line"><span class="output"> max
+------
+ 30000
+(1 row)</span></span>
+                    <span class="line comment">-- I) Difference between highest and lowest salary</span>
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT MAX(salary)-MIN(salary) AS salary_difference FROM employee2;</span></span>
+                    <span class="line"><span class="output"> salary_difference
+------------------
+ 20000
+(1 row)</span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project 7 -->
+        <section id="project7" class="section">
+            <h2>PROJECT 7 – AREA OF CIRCLE (PL/pgSQL)</h2>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="btn btn-close"></div>
+                        <div class="btn btn-min"></div>
+                        <div class="btn btn-max"></div>
+                    </div>
+                    <div class="terminal-title">psql - dvdrsh</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE TABLE areas(radius numeric, area numeric);</span></span>
+                    <span class="line"><span class="output">CREATE TABLE</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">DO $$ DECLARE r int; BEGIN FOR r IN 3..7 LOOP INSERT INTO areas VALUES(r,3.14*r*r); END LOOP; END $$;</span></span>
+                    <span class="line"><span class="output">DO</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM areas;</span></span>
+                    <span class="line"><span class="output"> radius |  area
+--------+---------
+ 3      | 28.26
+ 4      | 50.24
+ 5      | 78.50
+ 6      | 113.04
+ 7      | 153.86
+(5 rows)</span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project 8 -->
+        <section id="project8" class="section">
+            <h2>PROJECT 8 – PRIME NUMBER FUNCTION</h2>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="btn btn-close"></div>
+                        <div class="btn btn-min"></div>
+                        <div class="btn btn-max"></div>
+                    </div>
+                    <div class="terminal-title">psql - dvdrsh</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE OR REPLACE FUNCTION is_prime(n int) RETURNS text AS $$ DECLARE i int := 2; BEGIN IF n <= 1 THEN RETURN 'not prime'; END IF; WHILE i <= n/2 LOOP IF n % i = 0 THEN RETURN 'not prime'; END IF; i := i + 1; END LOOP; RETURN 'prime'; END; $$ LANGUAGE plpgsql;</span></span>
+                    <span class="line"><span class="output">CREATE FUNCTION</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT is_prime(7);</span></span>
+                    <span class="line"><span class="output"> is_prime
+----------
+ prime
+(1 row)</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT is_prime(8);</span></span>
+                    <span class="line"><span class="output"> is_prime
+----------
+ not prime
+(1 row)</span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project 9 -->
+        <section id="project9" class="section">
+            <h2>PROJECT 9 – ELECTRICITY BILL CALCULATION</h2>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="btn btn-close"></div>
+                        <div class="btn btn-min"></div>
+                        <div class="btn btn-max"></div>
+                    </div>
+                    <div class="terminal-title">psql - dvdrsh</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">DO $$ DECLARE cust_no int := 101; unit int := 350; charge numeric; BEGIN IF unit >= 600 THEN charge := unit * 3.5; ELSIF unit >= 400 THEN charge := unit * 3.0; ELSIF unit >= 200 THEN charge := unit * 2.5; ELSIF unit >= 100 THEN charge := unit * 2.0; ELSE charge := unit * 1.5; END IF; RAISE NOTICE 'Consumer Number: %', cust_no; RAISE NOTICE 'Unit Consumed: %', unit; RAISE NOTICE 'Bill Amount: %', charge; END $$;</span></span>
+                    <span class="line"><span class="output">NOTICE:  Consumer Number: 101
+NOTICE:  Unit Consumed: 350
+NOTICE:  Bill Amount: 875.0
+DO</span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project 10 -->
+        <section id="project10" class="section">
+            <h2>PROJECT 10 – EXAM RESULT GRADING</h2>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="btn btn-close"></div>
+                        <div class="btn btn-min"></div>
+                        <div class="btn btn-max"></div>
+                    </div>
+                    <div class="terminal-title">psql - dvdrsh</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE TABLE exam_result( rollno int, avg_score int, grade varchar(5) );</span></span>
+                    <span class="line"><span class="output">CREATE TABLE</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">INSERT INTO exam_result VALUES (1,95,NULL), (2,82,NULL), (3,70,NULL), (4,55,NULL), (5,40,NULL), (6,91,NULL), (7,76,NULL), (8,62,NULL), (9,58,NULL), (10,30,NULL);</span></span>
+                    <span class="line"><span class="output">INSERT 0 10</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">UPDATE exam_result SET grade='A' WHERE avg_score BETWEEN 90 AND 100;</span></span>
+                    <span class="line"><span class="output">UPDATE 2</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">UPDATE exam_result SET grade='B' WHERE avg_score BETWEEN 75 AND 89;</span></span>
+                    <span class="line"><span class="output">UPDATE 2</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">UPDATE exam_result SET grade='C' WHERE avg_score BETWEEN 60 AND 74;</span></span>
+                    <span class="line"><span class="output">UPDATE 2</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">UPDATE exam_result SET grade='D' WHERE avg_score BETWEEN 50 AND 59;</span></span>
+                    <span class="line"><span class="output">UPDATE 2</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">UPDATE exam_result SET grade='E' WHERE avg_score < 50;</span></span>
+                    <span class="line"><span class="output">UPDATE 2</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">SELECT * FROM exam_result;</span></span>
+                    <span class="line"><span class="output"> rollno | avg_score | grade
+--------+-----------+------
+ 1      | 95        | A
+ 2      | 82        | B
+ 3      | 70        | C
+ 4      | 55        | D
+ 5      | 40        | E
+ 6      | 91        | A
+ 7      | 76        | B
+ 8      | 62        | C
+ 9      | 58        | D
+ 10     | 30        | E
+(10 rows)</span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project 12 -->
+        <section id="project12" class="section">
+            <h2>PROJECT 12 – FIBONACCI SERIES PROCEDURE</h2>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="btn btn-close"></div>
+                        <div class="btn btn-min"></div>
+                        <div class="btn btn-max"></div>
+                    </div>
+                    <div class="terminal-title">psql - dvdrsh</div>
+                </div>
+                <div class="terminal-body">
+                    <span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CREATE OR REPLACE PROCEDURE fibonacci(n int) LANGUAGE plpgsql AS $$ DECLARE first int := 0; second int := 1; third int; i int; BEGIN RAISE NOTICE 'Fibonacci series:'; RAISE NOTICE '%', first; RAISE NOTICE '%', second; FOR i IN 2..n LOOP third := first + second; first := second; second := third; RAISE NOTICE '%', third; END LOOP; END; $$;</span></span>
+                    <span class="line"><span class="output">CREATE PROCEDURE</span></span>
+<span class="line"><span class="prompt">dvdrsh=#</span> <span class="cmd">CALL fibonacci(7);</span></span>
+                    <span class="line"><span class="output">NOTICE:  Fibonacci series:
+NOTICE:  0
+NOTICE:  1
+NOTICE:  1
+NOTICE:  2
+NOTICE:  3
+NOTICE:  5
+NOTICE:  8
+NOTICE:  13
+CALL</span></span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Simple script to highlight the active section in sidebar
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            // smooth scrolling is handled by CSS, this is just for active link highlight
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5
+            };
+
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        navLinks.forEach(link => {
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            } else {
+                                link.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+            
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Mobile menu toggle functionality
+            const menuBtn = document.getElementById('menuBtn');
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const overlay = document.getElementById('sidebarOverlay');
+            const sidebarLinksItem = document.querySelectorAll('.sidebar a');
+
+            function toggleMenu() {
+                sidebar.classList.toggle('show');
+                overlay.classList.toggle('show');
+                
+                // Only slide the terminal on smaller screens
+                if (window.innerWidth <= 768) {
+                    mainContent.classList.toggle('shift-right');
+                }
+            }
+
+            menuBtn.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', toggleMenu);
+
+            // Close sidebar when a link is clicked
+            sidebarLinksItem.forEach(link => {
+                link.addEventListener('click', () => {
+                    toggleMenu();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
