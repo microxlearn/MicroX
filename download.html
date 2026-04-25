@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File Download</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#ffffff,#eaf4ff);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    background:#ffffff;
+    padding:40px;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    text-align:center;
+    width:90%;
+    max-width:430px;
+    border:1px solid #dbeafe;
+}
+
+h1{
+    color:#0f4c81;
+    margin-bottom:15px;
+}
+
+p{
+    color:#555;
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+.download-btn{
+    display:inline-block;
+    padding:14px 30px;
+    background:#2563eb;
+    color:#fff;
+    text-decoration:none;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.download-btn:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
+}
+
+.note{
+    margin-top:25px;
+    font-size:14px;
+    color:#666;
+}
+
+.note a{
+    color:#2563eb;
+    text-decoration:none;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Download Ready</h1>
+    <p>Your file should start downloading automatically.<br>
+    If not, click the button below.</p>
+
+    <a href="https://drive.google.com/uc?export=download&id=1Kdo9E--g6UTH6iYESl02-o2u9vuXxxIz" class="download-btn" download>⬇ Download</a>
+
+    <div class="note">
+        Any issues? <a href="/contact-us.html">Contact Us</a>
+    </div>
+</div>
+
+<script>
+window.onload = function () {
+    const fileLink = "https://drive.google.com/uc?export=download&id=1Kdo9E--g6UTH6iYESl02-o2u9vuXxxIz"; // replace with your file link
+
+    const a = document.createElement("a");
+    a.href = fileLink;
+    a.download = "";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+};
+
+window.onbeforeunload = function () {
+    return "Are you sure you want to leave?";
+};
+</script>
+
+</body>
+</html>
