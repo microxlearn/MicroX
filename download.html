@@ -3,107 +3,273 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>File Download</title>
+<title>BCA 4th Sem</title>
 
 <style>
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
-    background:linear-gradient(135deg,#ffffff,#eaf4ff);
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+background:linear-gradient(135deg,#eef4ff,#ffffff,#dfeaff);
+padding:14px;
+color:#111;
 }
 
 .container{
-    background:#ffffff;
-    padding:40px;
-    border-radius:18px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.08);
-    text-align:center;
-    width:90%;
-    max-width:430px;
-    border:1px solid #dbeafe;
+max-width:700px;
+margin:auto;
 }
 
-h1{
-    color:#0f4c81;
-    margin-bottom:15px;
+.header{
+background:linear-gradient(135deg,#0d6efd,#42a5ff);
+padding:24px 18px;
+border-radius:24px;
+text-align:center;
+color:#fff;
+box-shadow:0 12px 30px rgba(13,110,253,.18);
+margin-bottom:18px;
 }
 
-p{
-    color:#555;
-    line-height:1.6;
-    margin-bottom:25px;
+.header h1{
+font-size:32px;
+margin-bottom:8px;
 }
 
-.download-btn{
-    display:inline-block;
-    padding:14px 30px;
-    background:#2563eb;
-    color:#fff;
-    text-decoration:none;
-    border-radius:10px;
-    font-size:18px;
-    font-weight:bold;
-    transition:0.3s;
+.header p{
+font-size:14px;
+line-height:1.6;
+opacity:.95;
 }
 
-.download-btn:hover{
-    background:#1d4ed8;
-    transform:translateY(-2px);
+.card{
+background:#fff;
+border-radius:22px;
+padding:16px;
+margin-bottom:16px;
+border:1px solid #e8efff;
+box-shadow:0 8px 24px rgba(0,0,0,.08);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-4px);
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+cursor:pointer;
+}
+
+.name{
+font-size:18px;
+font-weight:700;
+color:#555;
+line-height:1.5;
+flex:1;
+}
+
+.microcopy{
+display:block;
+font-size:12px;
+font-weight:600;
+color:#9a9a9a;
+margin-top:4px;
+}
+
+.icon{
+width:34px;
+height:34px;
+border-radius:50%;
+background:#eef5ff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+font-weight:700;
+color:#0d6efd;
+}
+
+.details{
+max-height:0;
+overflow:hidden;
+transition:max-height .45s ease;
+}
+
+.inner{
+margin-top:12px;
+padding:14px;
+background:#f8fbff;
+border-radius:16px;
+border:1px solid #dcecff;
+font-size:14px;
+line-height:1.9;
+color:#333;
 }
 
 .note{
-    margin-top:25px;
-    font-size:14px;
-    color:#666;
+margin-top:10px;
+padding:10px;
+background:#eaf3ff;
+border-radius:12px;
+font-size:13px;
+font-weight:700;
+color:#0b4ca8;
 }
 
-.note a{
-    color:#2563eb;
-    text-decoration:none;
-    font-weight:bold;
+.pay{
+display:flex;
+justify-content:flex-end;
+margin-top:14px;
+}
+
+.footer{
+text-align:center;
+font-size:13px;
+color:#666;
+padding:12px;
+}
+
+@media(max-width:480px){
+.header h1{font-size:26px;}
+.name{font-size:16px;}
+.inner{font-size:13px;}
 }
 </style>
-</head>
 
+<script>
+function toggleBox(id,btn){
+let box=document.getElementById(id);
+if(box.style.maxHeight && box.style.maxHeight!="0px"){
+box.style.maxHeight="0px";
+btn.innerHTML="+";
+}else{
+box.style.maxHeight=box.scrollHeight+"px";
+btn.innerHTML="−";
+}
+}
+</script>
+</head>
 <body>
 
 <div class="container">
-    <h1>Download Ready</h1>
-    <p>Your file should start downloading automatically.<br>
-    If not, click the button below.</p>
 
-    <a href="https://drive.google.com/uc?export=download&id=1Kdo9E--g6UTH6iYESl02-o2u9vuXxxIz" class="download-btn" download>⬇ Download</a>
-
-    <div class="note">
-        Any issues? <a href="/contact-us.html">Contact Us</a>
-    </div>
+<div class="header">
+<h1>BCA 4th Sem</h1>
+<p>Micro Copy Download • Detailed Module Wise Notes • Important Questions • Score upto 80%</p>
 </div>
 
-<script>
-window.onload = function () {
-    const fileLink = "https://drive.google.com/uc?export=download&id=1Kdo9E--g6UTH6iYESl02-o2u9vuXxxIz"; // replace with your file link
+<div class="card">
+<div class="top" onclick="toggleBox('d1',this.querySelector('.icon'))">
+<div class="name">AUTOMATION AND ROBOTICS<span class="microcopy">MicroCopy</span></div>
+<div class="icon">+</div>
+</div>
+<div class="details" id="d1">
+<div class="inner">
+Module 1 explains automation concepts, advantages, industrial automation types and production systems.<br>
+Module 2 explains sensors, actuators, controllers and signal conversion devices used in industries.<br>
+Module 3 explains PLC architecture, ladder logic diagrams, timers, counters and machine control.<br>
+Module 4 explains robot structure, joints, coordinate systems, manipulators and end effectors.<br>
+Module 5 explains real world robotics applications, AI integration and future automation trends.
+<div class="note">Get upto 80% with repeated questions and easy notes.</div>
+</div>
+</div>
+<div class="pay">
+<form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_Si2VbUWjb7ibMY" async></script></form>
+</div>
+</div>
 
-    const a = document.createElement("a");
-    a.href = fileLink;
-    a.download = "";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-};
+<div class="card">
+<div class="top" onclick="toggleBox('d2',this.querySelector('.icon'))">
+<div class="name">CYBER LAW<span class="microcopy">MicroCopy</span></div>
+<div class="icon">+</div>
+</div>
+<div class="details" id="d2">
+<div class="inner">
+Module 1 explains cyber law meaning, cyber space, digital transactions and legal importance.<br>
+Module 2 explains IT Act 2000, amendments, e-governance and electronic records.<br>
+Module 3 explains hacking, phishing, identity theft, cyber crimes and punishments.<br>
+Module 4 explains privacy rights, digital signatures, certifying authorities and contracts.<br>
+Module 5 explains case studies, legal procedures and university expected questions.
+<div class="note">Get upto 80% with exam oriented answers.</div>
+</div>
+</div>
+<div class="pay">
+<form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_Si2VbUWjb7ibMY" async></script></form>
+</div>
+</div>
 
-window.onbeforeunload = function () {
-    return "Are you sure you want to leave?";
-};
-</script>
+<div class="card">
+<div class="top" onclick="toggleBox('d3',this.querySelector('.icon'))">
+<div class="name">DATABASE MANAGEMENT SYSTEM<span class="microcopy">MicroCopy</span></div>
+<div class="icon">+</div>
+</div>
+<div class="details" id="d3">
+<div class="inner">
+Module 1 explains DBMS basics, advantages, schema, keys and data independence.<br>
+Module 2 explains ER model, entities, attributes, relationships and relational database design.<br>
+Module 3 explains SQL commands, joins, nested queries, views and constraints.<br>
+Module 4 explains normalization, functional dependency and transaction management.<br>
+Module 5 explains backup, recovery methods, security and database administration basics.
+<div class="note">Get upto 80% with theory + SQL practice notes.</div>
+</div>
+</div>
+<div class="pay">
+<form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_Si2VbUWjb7ibMY" async></script></form>
+</div>
+</div>
+
+<div class="card">
+<div class="top" onclick="toggleBox('d4',this.querySelector('.icon'))">
+<div class="name">PYTHON PROGRAMMING<span class="microcopy">MicroCopy</span></div>
+<div class="icon">+</div>
+</div>
+<div class="details" id="d4">
+<div class="inner">
+Module 1 explains Python introduction, syntax, variables, operators and input output statements.<br>
+Module 2 explains conditions, loops, functions, recursion and control statements.<br>
+Module 3 explains lists, tuples, sets, dictionaries and string handling methods.<br>
+Module 4 explains classes, objects, inheritance, exceptions and file handling.<br>
+Module 5 explains important university programs, debugging methods and viva questions.
+<div class="note">Get upto 80% with easy coding notes.</div>
+</div>
+</div>
+<div class="pay">
+<form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_Si2VbUWjb7ibMY" async></script></form>
+</div>
+</div>
+
+<div class="card">
+<div class="top" onclick="toggleBox('d5',this.querySelector('.icon'))">
+<div class="name">SOFTWARE ENGINEERING<span class="microcopy">MicroCopy</span></div>
+<div class="icon">+</div>
+</div>
+<div class="details" id="d5">
+<div class="inner">
+Module 1 explains software crisis, SDLC models like waterfall, spiral and agile.<br>
+Module 2 explains requirement engineering, feasibility study and SRS documentation.<br>
+Module 3 explains software design concepts, modularization, UML basics and coding standards.<br>
+Module 4 explains unit testing, integration testing, system testing and quality assurance.<br>
+Module 5 explains maintenance, project management, software metrics and risk control.
+<div class="note">Get upto 80% with long answers and revision notes.</div>
+</div>
+</div>
+<div class="pay">
+<form><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_Si2VbUWjb7ibMY" async></script></form>
+</div>
+</div>
+
+<div class="footer">
+Secure Payment • Smooth Experience
+</div>
+
+</div>
 
 </body>
 </html>
